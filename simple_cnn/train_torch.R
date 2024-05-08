@@ -1,21 +1,21 @@
 # train the torch learner
+library(coro)
+
 opt <- optim_adam(learner_torch_mlp$parameters)
 
 ### training loop --------------------------------------
 
 for (t in 1:50) {
-  ### -------- Forward pass --------
-  y_pred <- learner_torch_mlp(x)
+    l <- c()
   
-  ### -------- Compute loss -------- 
-  loss <- nnf_mse_loss(y_pred, y)
-#   if (t %% 10 == 0)
-#     cat("Epoch: ", t, "   Loss: ", loss$item(), "\n")
-  
-  ### -------- Backpropagation --------
-  opt$zero_grad()
-  loss$backward()
-  
-  ### -------- Update weights -------- 
-  opt$step()
+    coro::loop(for (b in train_dl) {
+        opt$zero_grad()
+        output <- learner_torch_mlp(b[[1]])
+        loss <- nnf_mse_loss(output$squeeze(2), b[[2]])
+        loss$backward()
+        opt$step()
+        l <- c(l, loss$item())
+    })
 }
+
+

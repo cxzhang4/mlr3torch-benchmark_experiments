@@ -19,7 +19,7 @@ train_ds <- guess_the_correlation_dataset(
   root = root,
   transform = function(img) crop_axes(img) |> add_channel_dim(),
   indexes = trn_idx,
-  download = FALSE
+  download = TRUE
 )
 ```
 

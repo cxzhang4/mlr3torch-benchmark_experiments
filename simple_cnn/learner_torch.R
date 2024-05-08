@@ -1,7 +1,9 @@
-input_dim <- prod(dim(train_ds$x))
+input_dim <- prod(dim(train_ds[1]$x))
+print(input_dim)
 output_dim <- 1
 
 learner_torch_mlp <- nn_sequential(
+  nn_flatten(),
   nn_linear(input_dim, 20),
   nn_relu(),
   nn_linear(20, 20),
