@@ -1,0 +1,228 @@
+```{r}
+library(torch)
+library(luz)
+library(torchvision)
+library(torchdatasets)
+```
+
+```{r}
+trn_idx <- 1:10000
+val_idx <- 10001:15000
+tst_idx <- 15001:20000
+
+add_channel_dim <- function(img) img$unsqueeze(1)
+crop_axes <- function(img) transform_crop(img, top = 0, left = 21, height = 131, width = 130)
+
+root <- file.path(tempdir(), "correlation")
+
+train_ds <- guess_the_correlation_dataset(
+  root = root,
+  transform = function(img) crop_axes(img) |> add_channel_dim(),
+  indexes = trn_idx,
+  download = FALSE
+)
+```
+
+```{r}
+valid_ds <- guess_the_correlation_dataset(
+  root = root,
+  transform = function(img) crop_axes(img) |> add_channel_dim(),
+  indexes = val_idx,
+  download = FALSE
+)
+
+test_ds <- guess_the_correlation_dataset(
+  root = root,
+  transform = function(img) crop_axes(img) |> add_channel_dim(),
+  indexes = tst_idx,
+  download = FALSE
+)
+```
+
+```{r}
+length(train_ds)
+length(valid_ds)
+length(test_ds)
+```
+
+```{r}
+train_ds[1]
+```
+
+The first dimension is the channel dimension. This is because we constructed the tensor this way with our `add_channel_dim` function, which used `$unsqueeze()` to add a singleton (?) dimension at a requested position (i.e. add a dimension and make its value 1).
+
+Breakdown of the `crop_axes` custom transformation:
+
+Crop the image, cutting off the axes and labels on the left and bottom. This is because we already know that these things do not convey meaningful information about the correlation, so removing them will save memory.
+
+Now, we want to show *batches* of data. To do so, we will use `DataLoader` objects.
+
+```{r}
+train_dl <- dataloader(train_ds, batch_size = 64, shuffle = TRUE)
+
+length(train_dl)
+```
+
+To access the first batch, we create an iterator from the `DataLoader` and ask the iterator for the first batch.
+
+Even if we did not want to plot this batch, doing this would be useful for, e.g. checking that the dimensions of the batch look how you expect them to.
+
+```{r}
+batch <- dataloader_make_iter(train_dl) |> dataloader_next()
+
+dim(batch$x)
+dim(batch$y)
+```
+
+```{r}
+par(mfrow = c(8, 8), mar = rep(0, 4))
+
+images <- as.array(batch$x$squeeze(2))
+
+images |>
+  purrr::array_tree(1) |>
+  purrr::map(as.raster) |>
+  purrr::iwalk(~{plot(.x)})
+```
+
+View the ground truth labels for each item in the batch:
+
+```{r}
+batch$y |> as.numeric() |> round(digits = 2)
+```
+
+```{r}
+valid_dl <- dataloader(valid_ds, batch_size = 64)
+length(valid_dl)
+```
+
+```{r}
+test_dl <- dataloader(test_ds, batch_size = 64)
+length(test_dl)
+```
+
+## Create the model
+
+Recap of what we are trying to accomplish:
+
+we have input data: images. A reasonable first choice to model this data is some sort of CNN. 
+
+In `torch`, a neural network is a `module`: that is, a container for more granular modules (this goes as deep as you want it to).
+
+For simplicity, we will create only two levels: a top-level module that represents the module, and submodules (i.e. layers).
+
+Calling `nn_module()` instantiate a `nn_Module`, an R6 class that knows how to act like a neural network.
+
+`$initialize()` will instantiate any submodules.
+
+`forward()` defines what happens when we call this module.
+
+```{r}
+torch_manual_seed(777)
+
+corr_cnn <- nn_module(
+  "corr-cnn",
+  
+  initialize = function() {
+    self$conv1 <- nn_conv2d(in_channels = 1, out_channels = 32, kernel_size = 3)
+    self$conv2 <- nn_conv2d(in_channels = 32, out_channels = 64, kernel_size = 3)
+    self$conv3 <- nn_conv2d(in_channels = 64, out_channels = 128, kernel_size = 3)
+    
+    self$fc1 <- nn_linear(in_features = 14 * 14 * 128, out_features = 128)
+    self$fc2 <- nn_linear(in_features = 128, out_features = 1)
+  },
+  
+  forward = function(x) {
+    x |>
+      self$conv1() |>
+      nnf_relu() |>
+      nnf_avg_pool2d(2) |>
+      
+      self$conv2() |>
+      nnf_relu() |>
+      nnf_avg_pool2d(2) |>
+      
+      self$conv3() |>
+      nnf_relu() |>
+      nnf_avg_pool2d(2) |>
+      
+      torch_flatten(start_dim = 2) |>
+      self$fc1() |>
+      nnf_relu() |>
+      
+      self$fc2()
+  }
+  
+)
+```
+
+The convolutional layers apply a filter (kernel) of size 3*3. It slides over the image and computes a local aggregate for each 3x3 subsection of the image. There are 32 different filters in the first layer, 64 in the second, 128 in the third.
+
+The filters are trained to pick up informative spatial features: features that tell us something meaningful (hopefully) about the image.
+
+There are also two linear layers. These are the layers we know from MLPs: they receive inputs from all units in the previous, multiply them by some weights, and send their results to the next layer.
+
+`nnf_relu()`: set negative values to 0, leave nonnegative untouched
+
+`nnf_avg_pool2d(2)`: downsize the image: replace a 2*2 patch of pixels by its average. "While we're going up in the number of channels (from 1 via 32 and 64 to 128), we decrease spatial resolution."
+
+`torch_flatten()`: reshape the inputs from the 4-d output (by the second convolutional layer) to the 2d output expected by the first linear layer.
+
+We can test this out before training by calling the model on a batch of data - this will show us if we have specified the dimensions correctly.
+
+```{r}
+mod <- corr_cnn()
+mod(batch$x)
+```
+
+If you wanted to train the model "manually", you would do something like this for every batch:
+
+```{r}
+# # run the model to obtain its current predictions on the output
+# output <- model(batch$x)
+# 
+# # evaluate how bad the predictions are right now
+# loss <- nnf_mse_loss(output, batch$y$unsqueeze(2))
+# 
+# # feed this information backward through the network, computing how changes to the weights would make the loss smaller
+# loss$backward()
+# 
+# # change the weights using the optimizer
+# optimizer$step()
+```
+
+`luz` implements this functionality.
+
+`setup()` specifies the loss function and optimization algorithm.
+
+```{r}
+fitted <- corr_cnn |>
+  setup(
+    loss = function(y_hat, y_true) nnf_mse_loss(y_hat, y_true$unsqueeze(2)),
+    optimizer = optim_adam
+  ) |>
+  fit(train_dl, epochs = 10, valid_data = test_dl)
+```
+
+```{r}
+preds <- predict(fitted, test_dl)
+```
+
+```{r}
+preds <- preds$to(device = "cpu")$squeeze() %>% as.numeric()
+test_dl <- dataloader(test_ds, batch_size = 5000)
+targets <- (test_dl %>% dataloader_make_iter() %>% dataloader_next())$y %>% as.numeric()
+
+df <- data.frame(preds = preds, targets = targets)
+
+library(ggplot2)
+
+ggplot(df, aes(x = targets, y = preds)) +
+  geom_point(size = 0.1) +
+  theme_classic() +
+  xlab("true correlations") +
+  ylab("model predictions")
+```
+
+
+

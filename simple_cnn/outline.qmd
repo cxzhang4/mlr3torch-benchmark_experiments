@@ -1,0 +1,11 @@
+Proposed software structure
+
+- Single file that runs
+  - a file with mlr3torch CNN
+  - a file with torch CNN
+- Times each one
+- Times each one by component (if you can conceptualize components)
+  - perhaps training and prediction
+
+- Architecture: same as guess the correlation example
+
