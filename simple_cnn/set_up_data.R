@@ -16,21 +16,21 @@ root <- file.path("data", "correlation")
 
 train_ds <- guess_the_correlation_dataset(
   root = root,
-  transform = function(img) crop_axes(img) |> add_channel_dim(),
+  transform = function(img) add_channel_dim(crop_axes(img)),
   indexes = trn_idx,
   download = FALSE # change if necessary
 )
 
 valid_ds <- guess_the_correlation_dataset(
   root = root,
-  transform = function(img) crop_axes(img) |> add_channel_dim(),
+  transform = function(img) add_channel_dim(crop_axes(img)),
   indexes = val_idx,
   download = FALSE
 )
 
 test_ds <- guess_the_correlation_dataset(
   root = root,
-  transform = function(img) crop_axes(img) |> add_channel_dim(),
+  transform = function(img) add_channel_dim(crop_axes(img)),
   indexes = tst_idx,
   download = FALSE
 )
