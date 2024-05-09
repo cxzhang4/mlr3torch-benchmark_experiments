@@ -14,28 +14,121 @@ crop_axes <- function(img) transform_crop(img, top = 0, left = 21, height = 131,
 
 root <- file.path("data", "correlation")
 
-train_ds <- guess_the_correlation_dataset(
+train_torch_ds <- guess_the_correlation_dataset(
   root = root,
   transform = function(img) add_channel_dim(crop_axes(img)),
   indexes = trn_idx,
   download = FALSE # change if necessary
 )
 
-valid_ds <- guess_the_correlation_dataset(
+valid_torch_ds <- guess_the_correlation_dataset(
   root = root,
   transform = function(img) add_channel_dim(crop_axes(img)),
   indexes = val_idx,
   download = FALSE
 )
 
-test_ds <- guess_the_correlation_dataset(
+test_torch_ds <- guess_the_correlation_dataset(
   root = root,
   transform = function(img) add_channel_dim(crop_axes(img)),
   indexes = tst_idx,
   download = FALSE
 )
 
-train_dl <- dataloader(train_ds, batch_size = 64, shuffle = TRUE)
-valid_dl <- dataloader(valid_ds, batch_size = 64)
-test_dl <- dataloader(test_ds, batch_size = 64)
+train_dl <- dataloader(train_torch_ds, batch_size = 64, shuffle = TRUE)
+valid_dl <- dataloader(valid_torch_ds, batch_size = 64)
+test_dl <- dataloader(test_torch_ds, batch_size = 64)
 
+maybe_download <- function(url, root, name, extract_fun, download) {
+  data_path <- fs::path_expand(fs::path(root, name))
+
+  if (!fs::dir_exists(data_path) && download) {
+    tmp <- tempfile()
+    download_file(url, tmp)
+    fs::dir_create(fs::path_dir(data_path), recurse = TRUE)
+    extract_fun(tmp, data_path)
+  }
+
+  if (!fs::dir_exists(data_path))
+    stop("No data found. Please use `download = TRUE`.")
+
+  data_path
+}
+
+guess_the_correlation_dataset_ <- torch::dataset(
+  "GuessTheCorrelation",
+  initialize = function(root, split = "train", transform = NULL, target_transform = NULL, indexes = NULL, download = FALSE) {
+
+    self$transform <- transform
+    self$target_transform <- target_transform
+
+    # donwload ----------------------------------------------------------
+    data_path <- maybe_download(
+      root = root,
+      name = "guess-the-correlation",
+      url = "https://storage.googleapis.com/torch-datasets/guess-the-correlation.zip",
+      download = download,
+      extract_fun = function(temp, data_path) {
+        unzip2(temp, exdir = data_path)
+        unzip2(fs::path(data_path, "train_imgs.zip"), exdir = data_path)
+        unzip2(fs::path(data_path, "test_imgs.zip"), exdir = data_path)
+      }
+    )
+
+    # variavel resposta -------------------------------------------------
+
+    if(split == "train") {
+      self$images <- readr::read_csv(fs::path(data_path, "train.csv"), col_types = c("cn"))
+      if(!is.null(indexes)) self$images <- self$images[indexes, ]
+      self$.path <- file.path(data_path, "train_imgs")
+    } else if(split == "submission") {
+      self$images <- readr::read_csv(fs::path(data_path, "example_submition.csv"), col_types = c("cn"))
+      self$images$corr <- NA_real_
+      self$.path <- file.path(data_path, "test_imgs")
+    }
+  },
+
+  .getitem = function(index) {
+
+    force(index)
+
+    sample <- self$images[index, ]
+    id <- sample$id
+    x <- torchvision::base_loader(file.path(self$.path, paste0(sample$id, ".png")))
+    x <- torchvision::transform_to_tensor(x) %>% torchvision::transform_rgb_to_grayscale()
+
+    if (!is.null(self$transform))
+      x <- self$transform(x)
+
+    # y <- torch::torch_scalar_tensor(sample$corr)
+    # if (!is.null(self$target_transform))
+    #   y <- self$target_transform(y)
+
+    return(list(x = x, id = id))
+  },
+
+  .length = function() {
+    nrow(self$images)
+  }
+)
+
+train_mlr3torch_ds <- guess_the_correlation_dataset_(
+  root = root,
+  transform = function(img) add_channel_dim(crop_axes(img)),
+  indexes = trn_idx,
+  download = FALSE # change if necessary
+)
+
+valid_mlr3torch_ds <- guess_the_correlation_dataset_(
+  root = root,
+  transform = function(img) add_channel_dim(crop_axes(img)),
+  indexes = val_idx,
+  download = FALSE
+)
+
+test_mlr3torch_ds <- guess_the_correlation_dataset_(
+  root = root,
+  transform = function(img) add_channel_dim(crop_axes(img)),
+  indexes = tst_idx,
+  download = FALSE
+)
