@@ -3,10 +3,11 @@
 # key difference: torch dataloader contains target varialbe
 # but mlr3torch dataset contains only input features, not target
 
-# task_dataset(train_ds)
-# library(mlr3)
+# will likely need to use DataBackendLazy
 
-names(train_mlr3torch_ds)
+# task_dataset(train_ds)
+
+databackend_gtcorr = DataBackendLazy$new()
 
 # TODO: get the y values
-tsk_gtcorr = as_task_regr(train_mlr3torch_ds, target = "y")
+tsk_gtcorr = TaskRegr$new(id = "guess_the_corr", backend = train_mlr3torch_ds, target = "y"))

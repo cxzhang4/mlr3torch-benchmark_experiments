@@ -1,5 +1,5 @@
 # Define the network architecture for both the torch and mlr3torch learner
-
+library(mlr3)
 library(mlr3torch)
 
 learner_mlr3torch_mlp = lrn("regr.mlp",
@@ -18,5 +18,5 @@ learner_mlr3torch_mlp = lrn("regr.mlp",
   measures_valid = msrs(c("regr.mse")),
   measures_train = msrs(c("regr.mse")),
   # predict type (required by logloss)
-  predict_type = "prob"
+  predict_type = "response"
 )
