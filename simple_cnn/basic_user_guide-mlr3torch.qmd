@@ -1,0 +1,8 @@
+### Processing the data
+
+The `dataset$.getitem()` should return only a list of tensors (e.g. `list(x = x)`).
+
+In "raw" `torch`, it is common to return `id`s and response values as well. `mlr3torch` does not expect these.
+
+### Constructing a task
+
