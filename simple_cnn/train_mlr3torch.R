@@ -26,5 +26,8 @@ dd_gtcorr = as_data_descriptor(train_mlr3torch_ds,
 
 lt = as_lazy_tensor(dd_gtcorr)
 
+# for this particular data: responses are stored in a csv that has ids
+# problem: we did not store the ids or the response values in the dataset
+
 # TODO: get the y va
 tsk_gtcorr = TaskRegr$new(id = "guess_the_corr", backend = train_mlr3torch_ds, target = "y")

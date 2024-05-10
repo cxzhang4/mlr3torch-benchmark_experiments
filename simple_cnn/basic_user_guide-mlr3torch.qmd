@@ -1,8 +1,16 @@
 ### Processing the data
 
 The `dataset$.getitem()` should return only a list of tensors (e.g. `list(x = x)`).
-
 In "raw" `torch`, it is common to return `id`s and response values as well. `mlr3torch` does not expect these.
+
+Currently, my pipeline is:
+- torch dataset to data descriptor
+- data descriptor to lazy tensor
+- create data.table with response column and lazy tensor column
+- use this data.table to create the task
 
 ### Constructing a task
 
+### Training
+
+### Prediction
