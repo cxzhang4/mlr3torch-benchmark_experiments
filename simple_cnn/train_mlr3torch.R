@@ -12,17 +12,19 @@
 # but we need to construct the lazy tensor without y values
 
 
-ds = dataset("example",
-  initialize = function() self$iris = iris[, -5],
-  .getitem = function(i) list(x = torch_tensor(as.numeric(self$iris[i, ]))),
-  .length = function() nrow(self$iris)
-)()
-
-ds$.getitem(1)$unsqueeze(1)
+# ds = dataset("example",
+#   initialize = function() self$iris = iris[, -5],
+#   .getitem = function(i) list(x = torch_tensor(as.numeric(self$iris[i, ]))),
+#   .length = function() nrow(self$iris)
+# )()
+# 
+# ds$.getitem(1)$unsqueeze(1)
 
 dd_gtcorr = as_data_descriptor(train_mlr3torch_ds, 
-    dataset_shapes = list(x = c(NA, 16900L))
+    dataset_shapes = list(x = c(NA, 130, 130))
 )
 
-# TODO: get the y values
+lt = as_lazy_tensor(dd_gtcorr)
+
+# TODO: get the y va
 tsk_gtcorr = TaskRegr$new(id = "guess_the_corr", backend = train_mlr3torch_ds, target = "y")

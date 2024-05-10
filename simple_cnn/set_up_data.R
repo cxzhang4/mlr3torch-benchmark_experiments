@@ -104,7 +104,7 @@ guess_the_correlation_dataset_ <- torch::dataset(
     # if (!is.null(self$target_transform))
     #   y <- self$target_transform(y)
 
-    return(list(x = x, id = id))
+    return(list(x = x))
   },
 
   .length = function() {
