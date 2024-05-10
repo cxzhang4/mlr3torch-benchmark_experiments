@@ -1,4 +1,7 @@
-source("set_up_data.R")
+library(here)
+
+
+source(here("simple_cnn", "set_up_data.R"))
 
 # start_time_torch <- proc.time()
 # source("learner_torch.R")
@@ -7,8 +10,8 @@ source("set_up_data.R")
 # elapsed_time_torch <- proc.time() - start_time_torch
 
 start_time_mlr3torch <- proc.time()
-source("learner_mlr3torch.R")
-source("train_mlr3torch.R")
+source(here("simple_cnn", "learner_mlr3torch.R"))
+source(here("simple_cnn", "train_mlr3torch.R"))
 # source("predict_mlr3torch.R")
 elapsed_time_mlr3torch <- proc.time() - start_time_mlr3torch
 
