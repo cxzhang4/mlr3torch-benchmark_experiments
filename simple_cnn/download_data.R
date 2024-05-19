@@ -58,13 +58,17 @@ unzip2 <- function(path, exdir) {
 
 # end copy
 
-root = here("data", "correlation")
+data_dir = here("data", "correlation")
+
+should_download = list.files(data_dir) == 0
+
+print(should_download)
 
 maybe_download(
-      root = root,
+      root = data_dir,
       name = "guess-the-correlation",
       url = "https://storage.googleapis.com/torch-datasets/guess-the-correlation.zip",
-      download = TRUE,
+      download = !already_downloaded,
       extract_fun = function(temp, data_path) {
         unzip2(temp, exdir = data_path)
         unzip2(fs::path(data_path, "train_imgs.zip"), exdir = data_path)
