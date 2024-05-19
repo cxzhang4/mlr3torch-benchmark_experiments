@@ -2,17 +2,26 @@
 
 # will likely need to use DataBackendLazy
 
+library(data.table)
+
 dd_gtcorr = as_data_descriptor(train_mlr3torch_ds, 
     dataset_shapes = list(x = c(NA, 130, 130))
 )
 
 lt = lazy_tensor(dd_gtcorr)
 
+tsk_regr = as_task_regr(data.table(y = runif(10000), x = lt), target = "y")
+
 # TODO: determine whether assuming the ordering is preserved is a good assumption
 # if not, figure out how to get x IDs and join them with the ys
 
-library(data.table)
 train_responses = fread(here("simple_cnn", "data/correlation/guess-the-correlation/train_responses.csv"))
+
+dt_train = data.table(corr = train_responses[["corr"]][1:length(lt)], x = lt)
+
+tsk_gtcorr = as_task_regr(dt_train, target = "corr")
+
+
 
 # here, x is a list column
 dt_train = cbind(train_responses, x = lt)
