@@ -1,3 +1,8 @@
+library(data.table)
+library(mlr3torch)
+
+library(torchvision)
+
 # a modified version of the function from torchdatasets
 # where $.getitem() returns only the features
 guess_the_correlation_dataset_mlr3torch <- torch::dataset(
@@ -57,24 +62,55 @@ guess_the_correlation_dataset_mlr3torch <- torch::dataset(
   }
 )
 
+# arbitrarily define indices
+trn_idx <- 1:10000
+val_idx <- 10001:15000
+tst_idx <- 15001:20000
+
+# helper function for data transformation
+crop_axes <- function(img) transform_crop(img, top = 0, left = 21, height = 131, width = 130)
+
 # no channel dimension
 train_mlr3torch_ds <- guess_the_correlation_dataset_mlr3torch(
-  root = root,
+  root = data_dir,
   transform = function(img) crop_axes(img),
   indexes = trn_idx,
   download = FALSE
 )
 
 valid_mlr3torch_ds <- guess_the_correlation_dataset_mlr3torch(
-  root = root,
+  root = data_dir,
   transform = function(img) crop_axes(img),
   indexes = val_idx,
   download = FALSE
 )
 
 test_mlr3torch_ds <- guess_the_correlation_dataset_mlr3torch(
-  root = root,
+  root = data_dir,
   transform = function(img) crop_axes(img),
   indexes = tst_idx,
   download = FALSE
 )
+
+# get the response values
+train_responses = fread(here("simple_cnn", "data/correlation/guess-the-correlation/train_responses.csv"))
+
+# create data descriptor
+dd_gtcorr = as_data_descriptor(train_mlr3torch_ds, list(x = c(NA, 130, 130)))
+# create lazy tensor
+lt = lazy_tensor(dd_gtcorr)
+
+# construct the data.table for training
+dt_train = data.table(corr = train_responses[["corr"]][trn_idx], x = lt)
+
+tsk_gtcorr = as_task_regr(dt_train, target = "corr")
+
+# here, x is a list column
+# dt_train = cbind(train_responses, x = lt)
+# backend = DataBackendDataTable$new(data = dt_train, primary_key = "id")
+
+# for this particular data: responses are stored in a csv that has ids
+# problem: we did not store the ids or the response values in the dataset
+
+# tsk_gtcorr = TaskRegr$new(id = "guess_the_corr", backend = backend, target = "corr")
+

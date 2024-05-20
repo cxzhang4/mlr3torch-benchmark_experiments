@@ -21,25 +21,26 @@ dt_train = data.table(corr = train_responses[["corr"]][1:length(lt)], x = lt)
 
 tsk_gtcorr = as_task_regr(dt_train, target = "corr")
 
+learner_mlr3torch_mlp$train(tsk_gtcorr)
 
 
 # here, x is a list column
-dt_train = cbind(train_responses, x = lt)
-# print(head(dt_train))
-backend = DataBackendDataTable$new(data = dt_train, primary_key = "id")
+# dt_train = cbind(train_responses, x = lt)
+# # print(head(dt_train))
+# backend = DataBackendDataTable$new(data = dt_train, primary_key = "id")
 
-# for this particular data: responses are stored in a csv that has ids
-# problem: we did not store the ids or the response values in the dataset
+# # for this particular data: responses are stored in a csv that has ids
+# # problem: we did not store the ids or the response values in the dataset
 
-tsk_gtcorr = TaskRegr$new(id = "guess_the_corr", backend = backend, target = "corr")
+# tsk_gtcorr = TaskRegr$new(id = "guess_the_corr", backend = backend, target = "corr")
 
-## if we really want to pivot to e.g. iris
+# ## if we really want to pivot to e.g. iris
 
-# ds = dataset("example",
-#   initialize = function() self$iris = iris[, -5],
-#   .getitem = function(i) list(x = torch_tensor(as.numeric(self$iris[i, ]))),
-#   .length = function() nrow(self$iris)
-# )()
-# 
-# ds$.getitem(1)$unsqueeze(1)
+# # ds = dataset("example",
+# #   initialize = function() self$iris = iris[, -5],
+# #   .getitem = function(i) list(x = torch_tensor(as.numeric(self$iris[i, ]))),
+# #   .length = function() nrow(self$iris)
+# # )()
+# # 
+# # ds$.getitem(1)$unsqueeze(1)
 

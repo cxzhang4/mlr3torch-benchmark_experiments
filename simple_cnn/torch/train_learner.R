@@ -2,7 +2,7 @@ library(coro)
 
 opt <- optim_adam(learner_torch_mlp$parameters)
 
-n_epochs = 50
+n_epochs = 5
 for (t in 1:n_epochs) {
     # save intermediate loss values
     l <- c()
