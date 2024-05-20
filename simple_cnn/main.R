@@ -1,6 +1,15 @@
 library(here)
 
-source("download_data.R")
+source(here("simple_cnn", "download_data.R"))
+
+start_time_torch <- proc.time()
+source(here("simple_cnn", "torch", "set_up_data.R"))
+source(here("simple_cnn", "torch", "instantiate_learner.R"))
+source(here("simple_cnn", "torch", "train_learner.R"))
+source(here("simple_cnn", "torch", "evaluate_learner.R"))
+elapsed_time_torch <- proc.time() - start_time_torch
+
+print(elapsed_time_torch)
 
 # source(here("simple_cnn", "set_up_data.R"))
 
@@ -24,3 +33,4 @@ source("download_data.R")
 # this will help you understand what the data needs to look like
 # and will ensure that mlr3torch works at all
 # source(here("simple_cnn"), "define_learner.R")
+

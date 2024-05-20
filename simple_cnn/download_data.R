@@ -1,11 +1,9 @@
-library(torchdatasets)
+# library(torchdatasets)
 
 # TODO: figure out where the data should live
-
 # I think it should be in the top-level directory, since it's not necessarily specific to this experiment
 
 # begin copy from the torchdatasets package
-
 kaggle_download <- function(name, token = NULL) {
 
   if ("kaggle" %in% pins::board_list()) {
@@ -55,20 +53,17 @@ unzip2 <- function(path, exdir) {
     zip::unzip(path, exdir = exdir)
   }
 }
-
 # end copy
 
 data_dir = here("data", "correlation")
 
 should_download = list.files(data_dir) == 0
 
-print(should_download)
-
 maybe_download(
       root = data_dir,
       name = "guess-the-correlation",
       url = "https://storage.googleapis.com/torch-datasets/guess-the-correlation.zip",
-      download = !already_downloaded,
+      download = should_download,
       extract_fun = function(temp, data_path) {
         unzip2(temp, exdir = data_path)
         unzip2(fs::path(data_path, "train_imgs.zip"), exdir = data_path)
