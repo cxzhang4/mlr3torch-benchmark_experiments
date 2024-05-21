@@ -13,3 +13,5 @@ learner_torch_mlp <- nn_sequential(
 library(coro)
 
 opt <- optim_adam(learner_torch_mlp$parameters, lr = lr)
+
+function(lr)

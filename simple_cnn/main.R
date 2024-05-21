@@ -1,9 +1,14 @@
 library(here)
 
 # TODO: wrap each experiment in a single function call
-# benchmark_torch = function()
+# time_torch = function(lr, batch_size, n_epochs, etc.(?))
+# performs data setup, instantiates learner
+# times the training
+# returns the elapsed time
 
-# benchmark_mlr3torch = function()
+# time_mlr3torch = function()
+
+
 
 n_epochs = 3
 batch_size = 64
