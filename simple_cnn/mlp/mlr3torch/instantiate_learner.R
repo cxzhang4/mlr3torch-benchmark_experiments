@@ -1,7 +1,7 @@
 library(mlr3)
 library(mlr3torch)
 
-n_epochs = 5
+n_epochs = 2
 
 learner_mlr3torch_mlp = lrn("regr.mlp",
   # defining network parameters

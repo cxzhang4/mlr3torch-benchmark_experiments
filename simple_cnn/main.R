@@ -1,26 +1,28 @@
 library(here)
 
-# source(here("simple_cnn", "download_data.R"))
+source(here("simple_cnn", "download_data.R"))
 
-# start_time_torch <- proc.time()
-# source(here("simple_cnn", "torch", "set_up_data.R"))
-# source(here("simple_cnn", "torch", "instantiate_learner.R"))
-# source(here("simple_cnn", "torch", "train_learner.R"))
-# source(here("simple_cnn", "torch", "evaluate_learner.R"))
-# elapsed_time_torch <- proc.time() - start_time_torch
+start_time_torch <- proc.time()
+source(here("simple_cnn", "mlp", "torch", "set_up_data.R"))
+source(here("simple_cnn", "mlp", "torch", "instantiate_learner.R"))
+source(here("simple_cnn", "mlp", "torch", "train_learner.R"))
+# source(here("simple_cnn", "mlp", "torch", "evaluate_learner.R"))
+elapsed_time_torch <- proc.time() - start_time_torch
 
-# print(elapsed_time_torch)
+print(elapsed_time_torch)
 
 source(here("simple_cnn", "download_data.R"))
 
 start_time_mlr3torch <- proc.time()
-source(here("simple_cnn", "mlr3torch", "set_up_data.R"))
-source(here("simple_cnn", "mlr3torch", "instantiate_learner.R"))
-source(here("simple_cnn", "mlr3torch", "train_learner.R"))
-# source(here("simple_cnn", "mlr3torch", "evaluate_learner.R"))
+source(here("simple_cnn", "mlp", "mlr3torch", "set_up_data.R"))
+source(here("simple_cnn", "mlp", "mlr3torch", "instantiate_learner.R"))
+source(here("simple_cnn", "mlp", "mlr3torch", "train_learner.R"))
+# source(here("simple_cnn", "mlp", "mlr3torch", "evaluate_learner.R"))
 elapsed_time_mlr3torch <- proc.time() - start_time_mlr3torch
 
 print(elapsed_time_mlr3torch)
+
+# OLD
 
 # source(here("simple_cnn", "set_up_data.R"))
 
