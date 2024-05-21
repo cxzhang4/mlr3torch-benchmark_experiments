@@ -1,6 +1,6 @@
 library(data.table)
+library(torch)
 library(mlr3torch)
-
 library(torchvision)
 
 # a modified version of the function from torchdatasets

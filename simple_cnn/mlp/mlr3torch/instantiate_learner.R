@@ -8,7 +8,7 @@ learner_mlr3torch_mlp = lrn("regr.mlp",
   activation     = nn_relu,
   neurons        = c(20, 20),
   # training parameters
-  batch_size     = 16,
+  batch_size     = 10,
   epochs         = n_epochs,
   device         = "cpu",
   # Defining the optimizer, loss, and callbacks
