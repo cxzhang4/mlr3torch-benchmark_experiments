@@ -1,11 +1,6 @@
-library(coro)
-
-opt <- optim_adam(learner_torch_mlp$parameters)
-
-n_epochs = 2
-for (t in 1:n_epochs) {
+for (t in seq_len(n_epochs)) {
     # save intermediate loss values
-    l <- c()
+    # l <- c()
 
     coro::loop(for (b in train_dl) {
         # setup
@@ -18,6 +13,6 @@ for (t in 1:n_epochs) {
         # backpropagation
         loss$backward()
         opt$step()
-        l <- c(l, loss$item())
+        # l <- c(l, loss$item())
     })
 }

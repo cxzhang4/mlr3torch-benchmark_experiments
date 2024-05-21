@@ -1,27 +1,37 @@
 library(here)
 
-# torch
-# source(here("simple_cnn", "download_data.R"))
+# TODO: wrap each experiment in a single function call
+# benchmark_torch = function()
 
-# start_time_torch = proc.time()
-# source(here("simple_cnn", "mlp", "torch", "set_up_data.R"))
-# source(here("simple_cnn", "mlp", "torch", "instantiate_learner.R"))
-# source(here("simple_cnn", "mlp", "torch", "train_learner.R"))
-# # source(here("simple_cnn", "mlp", "torch", "evaluate_learner.R"))
-# elapsed_time_torch = proc.time() - start_time_torch
+# benchmark_mlr3torch = function()
 
-# print(elapsed_time_torch)
+n_epochs = 3
+batch_size = 64
+lr = 0.01
+
+source(here("simple_cnn", "download_data.R"))
+
+source(here("simple_cnn", "mlp", "torch", "set_up_data.R"))
+source(here("simple_cnn", "mlp", "torch", "instantiate_learner.R"))
+start_time_torch = proc.time()
+source(here("simple_cnn", "mlp", "torch", "train_learner.R"))
+# source(here("simple_cnn", "mlp", "torch", "evaluate_learner.R"))
+elapsed_time_torch = proc.time() - start_time_torch
+
+print("torch")
+print(elapsed_time_torch)
 
 # mlr3torch
 source(here("simple_cnn", "download_data.R"))
 
-start_time_mlr3torch = proc.time()
 source(here("simple_cnn", "mlp", "mlr3torch", "set_up_data.R"))
 source(here("simple_cnn", "mlp", "mlr3torch", "instantiate_learner.R"))
+start_time_mlr3torch = proc.time()
 source(here("simple_cnn", "mlp", "mlr3torch", "train_learner.R"))
 # source(here("simple_cnn", "mlp", "mlr3torch", "evaluate_learner.R"))
 elapsed_time_mlr3torch = proc.time() - start_time_mlr3torch
 
+print("mlr3torch")
 print(elapsed_time_mlr3torch)
 
 # OLD

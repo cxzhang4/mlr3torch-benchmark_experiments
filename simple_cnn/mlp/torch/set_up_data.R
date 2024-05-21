@@ -38,6 +38,6 @@ test_torch_ds <- guess_the_correlation_dataset(
 )
 
 # create the dataloaders
-train_dl <- dataloader(train_torch_ds, batch_size = 64, shuffle = TRUE)
-valid_dl <- dataloader(valid_torch_ds, batch_size = 64)
-test_dl <- dataloader(test_torch_ds, batch_size = 64)
+train_dl <- dataloader(train_torch_ds, batch_size = batch_size, shuffle = TRUE)
+valid_dl <- dataloader(valid_torch_ds, batch_size = batch_size)
+test_dl <- dataloader(test_torch_ds, batch_size = batch_size)

@@ -9,3 +9,7 @@ learner_torch_mlp <- nn_sequential(
   nn_relu(),
   nn_linear(20, output_dim)
 )
+
+library(coro)
+
+opt <- optim_adam(learner_torch_mlp$parameters, lr = lr)

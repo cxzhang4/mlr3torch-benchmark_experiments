@@ -74,21 +74,21 @@ add_channel_dim <- function(img) img$unsqueeze(1)
 # no channel dimension
 train_mlr3torch_ds <- guess_the_correlation_dataset_mlr3torch(
   root = data_dir,
-  transform = function(img) add_channel_dim(crop_axes(img)),
+  transform = function(img) torch_flatten(add_channel_dim(crop_axes(img))),
   indexes = trn_idx,
   download = FALSE
 )
 
 valid_mlr3torch_ds <- guess_the_correlation_dataset_mlr3torch(
   root = data_dir,
-  transform = function(img) add_channel_dim(crop_axes(img)),
+  transform = function(img) torch_flatten(add_channel_dim(crop_axes(img))),
   indexes = val_idx,
   download = FALSE
 )
 
 test_mlr3torch_ds <- guess_the_correlation_dataset_mlr3torch(
   root = data_dir,
-  transform = function(img) add_channel_dim(crop_axes(img)),
+  transform = function(img) torch_flatten(add_channel_dim(crop_axes(img))),
   indexes = tst_idx,
   download = FALSE
 )
@@ -97,7 +97,7 @@ test_mlr3torch_ds <- guess_the_correlation_dataset_mlr3torch(
 train_responses = fread(here("simple_cnn", "data/correlation/guess-the-correlation/train_responses.csv"))
 
 # create data descriptor
-dd_gtcorr = as_data_descriptor(train_mlr3torch_ds, list(x = c(NA, 1, 130, 130)))
+dd_gtcorr = as_data_descriptor(train_mlr3torch_ds, list(x = c(NA, 16900)))
 # create lazy tensor
 lt = lazy_tensor(dd_gtcorr)
 
