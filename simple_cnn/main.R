@@ -8,8 +8,6 @@ library(here)
 
 # time_mlr3torch = function()
 
-
-
 n_epochs = 3
 batch_size = 64
 lr = 0.01

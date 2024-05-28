@@ -14,4 +14,4 @@ library(coro)
 
 opt <- optim_adam(learner_torch_mlp$parameters, lr = lr)
 
-function(lr)
+# function(lr)
