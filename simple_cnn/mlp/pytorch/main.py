@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn 
 import torchvision.transforms as transforms
+import custom_transforms
 from data import GuessTheCorrelationDataset
 import time
 
@@ -30,14 +31,16 @@ loss_fn = torch.nn.MSELoss()
 optimizer = torch.optim.Adam(learner_torch_mlp.parameters(), lr = lr)
 
 transforms_for_corr_images = transforms.Compose([
-    transforms.Lambda(lambda img: img.unsqueeze(1)),
-    transforms.Lambda(lambda img: transforms.functional.crop(img, top = 0, left = 21, height = 131, width = 130))
+    custom_transforms.AddChannelDimension(),
+    custom_transforms.CustomCrop(top = 0, left = 21, height = 131, width = 130),
 ])
 
 train_ds = GuessTheCorrelationDataset(root = "data/correlation/guess-the-correlation",
                                       responses_file_path = "train.csv",
                                       transform = transforms_for_corr_images,
                                       )
+
+print(train_ds.__getitem__(0)[0].shape)
 
 train_dataloader = torch.utils.data.DataLoader(train_ds, batch_size=batch_size)
 
