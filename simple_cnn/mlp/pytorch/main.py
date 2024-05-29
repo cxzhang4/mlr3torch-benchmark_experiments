@@ -32,7 +32,7 @@ optimizer = torch.optim.Adam(learner_torch_mlp.parameters(), lr = lr)
 
 transforms_for_corr_images = transforms.Compose([
     custom_transforms.AddChannelDimension(),
-    custom_transforms.CustomCrop(top = 0, left = 21, height = 131, width = 130),
+    custom_transforms.CustomCrop(top = 0, left = 21, height = 131, width = 130)
 ])
 
 train_ds = GuessTheCorrelationDataset(root = "data/correlation/guess-the-correlation",
@@ -50,6 +50,7 @@ for i in range(n_epochs):
     for i, (img, target) in enumerate(train_dataloader):
         # img, target = img.to(DEVICE), target.to(DEVICE)
         optimizer.zero_grad()
+        img = img.float()
         y_pred = learner_torch_mlp(img)
         loss = loss_fn(y_pred, target)
         loss.backward()
