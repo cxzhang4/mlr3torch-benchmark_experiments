@@ -4,6 +4,7 @@ from torch.utils.data import Dataset
 import torchvision.transforms as transforms
 from torchvision.transforms import ToTensor
 from torchvision.io import read_image
+from torchvision.io import ImageReadMode
 import custom_transforms
 import pandas as pd
 
@@ -25,13 +26,8 @@ class GuessTheCorrelationDataset(Dataset):
         row = self.images.iloc[index]
 
         img_path = self.root + "/train_imgs/" + row["id"] + ".png"
-        img = read_image(img_path)
-        
-        default_transforms = transforms.Compose([
-            custom_transforms.RGB_to_Grayscale()
-        ])
-
-        img = default_transforms(img)
+        img = read_image(img_path, mode = ImageReadMode.GRAY)
+        img = img.unsqueeze(1)
 
         if self.transform:
             img = self.transform(img)

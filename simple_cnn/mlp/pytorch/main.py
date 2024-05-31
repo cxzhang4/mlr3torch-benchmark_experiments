@@ -13,6 +13,7 @@ lr = 0.01
 
 # create a learner
 # TODO: compute input_dim instead of hard-coding it
+# TODO: fix the transformations so that the true input dimension matches the hard-coded input dimension
 input_dim = 16900
 output_dim = 1
 
@@ -31,8 +32,8 @@ loss_fn = torch.nn.MSELoss()
 optimizer = torch.optim.Adam(learner_torch_mlp.parameters(), lr = lr)
 
 transforms_for_corr_images = transforms.Compose([
-    custom_transforms.AddChannelDimension(),
-    custom_transforms.CustomCrop(top = 0, left = 21, height = 131, width = 130)
+    custom_transforms.CustomCrop(top = 0, left = 21, height = 130, width = 130),
+    # custom_transforms.AddChannelDimension()
 ])
 
 train_ds = GuessTheCorrelationDataset(root = "data/correlation/guess-the-correlation",
@@ -41,6 +42,7 @@ train_ds = GuessTheCorrelationDataset(root = "data/correlation/guess-the-correla
                                       )
 
 print(train_ds.__getitem__(0)[0].shape)
+# print(train_ds.__getitem__(0)[1])
 
 train_dataloader = torch.utils.data.DataLoader(train_ds, batch_size=batch_size)
 
@@ -52,7 +54,7 @@ for i in range(n_epochs):
         optimizer.zero_grad()
         img = img.float()
         y_pred = learner_torch_mlp(img)
-        loss = loss_fn(y_pred, target)
+        loss = loss_fn(torch.squeeze(y_pred), target.float())
         loss.backward()
         optimizer.step()
 end_time = time.time()
