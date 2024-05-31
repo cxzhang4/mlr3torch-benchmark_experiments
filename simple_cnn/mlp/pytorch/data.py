@@ -8,23 +8,24 @@ from torchvision.io import ImageReadMode
 import custom_transforms
 import pandas as pd
 
-trn_idx = range(0, 10000)
-val_idx = range(10001, 15000)
-tst_idx = range(15001, 20000)
-
 class GuessTheCorrelationDataset(Dataset):
-    def __init__(self, root, responses_file_path, transform=None, target_transform=None):
+    def __init__(self, root, responses_file_path, transform=None, indexes=None, target_transform=None):
         self.root = root
-        self.images = pd.read_csv(root + "/" + responses_file_path)
+        self.responses_df = pd.read_csv(root + "/" + responses_file_path)
         self.transform = transform
         self.target_transform = target_transform
+        
+        if indexes:
+            self.responses_df = self.responses_df.iloc[indexes]
 
     def __len__(self):
-        return len(self.images)
+        return len(self.responses_df)
     
     def __getitem__(self, index):
-        row = self.images.iloc[index]
+        row = self.responses_df.iloc[index]
 
+        # TODO: refactor this to use os.path.join
+        # https://pytorch.org/tutorials/beginner/data_loading_tutorial.html
         img_path = self.root + "/train_imgs/" + row["id"] + ".png"
         img = read_image(img_path, mode = ImageReadMode.GRAY)
         img = img.unsqueeze(1)

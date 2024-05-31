@@ -5,7 +5,7 @@ import custom_transforms
 from data import GuessTheCorrelationDataset
 import time
 
-n_epochs = 3
+n_epochs = 10
 batch_size = 64
 lr = 0.01
 
@@ -36,10 +36,14 @@ transforms_for_corr_images = transforms.Compose([
     # custom_transforms.AddChannelDimension()
 ])
 
+trn_idx = range(0, 10000)
+# val_idx = range(10001, 15000)
+# tst_idx = range(15001, 20000)
+
 train_ds = GuessTheCorrelationDataset(root = "data/correlation/guess-the-correlation",
                                       responses_file_path = "train.csv",
                                       transform = transforms_for_corr_images,
-                                      )
+                                      indexes = trn_idx)
 
 print(train_ds.__getitem__(0)[0].shape)
 # print(train_ds.__getitem__(0)[1])
