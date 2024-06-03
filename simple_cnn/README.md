@@ -16,4 +16,4 @@ The Python code is structured as follows:
 - `model.py` defines the architecture of the learner.
 - `main.py` performs the benchmark: imports the data, trains the learner, evaluates the learner.
 
-The relevant `conda` environment is defined in `environment.yml`.
+The relevant `conda` environment is defined in `environment.yml` in the root of the repository.
