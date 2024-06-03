@@ -9,11 +9,11 @@ The R code is structured as follows:
     - `train_learner.R` trains the learner. This is timed.
     - `evaluate_learner.R` evaluates the learner on out-of-sample data. This is timed.
 - `time_training.R` wraps everything into a nicer interface.
-- `main.R` performs the benchmark.
+- `main.R` performs the benchmark experiment.
 
 The Python code is structured as follows:
 - `data.py` defines the Dataset class and relevant transformations.
 - `model.py` defines the architecture of the learner.
-- `main.py` performs the benchmark: imports the data, trains the learner, evaluates the learner.
+- `main.py` performs the benchmark experiment: imports the data, trains the learner, evaluates the learner.
 
 The relevant `conda` environment is defined in `environment.yml` in the root of the repository.

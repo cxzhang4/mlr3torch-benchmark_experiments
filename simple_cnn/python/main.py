@@ -44,13 +44,10 @@ train_ds = GuessTheCorrelationDataset(root = "data/correlation/guess-the-correla
 
 train_dataloader = torch.utils.data.DataLoader(train_ds, batch_size=batch_size)
 
-# print(train_dataloader.__len__())
-
 start_time = time.time()
 for i in range(n_epochs):
     learner_torch_cnn.train()
     for i, (img, target) in enumerate(train_dataloader):
-        # print(i)
         optimizer.zero_grad()
         img = img.float()
         y_pred = learner_torch_cnn(img)
