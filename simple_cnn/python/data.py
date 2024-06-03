@@ -27,7 +27,7 @@ class GuessTheCorrelationDataset(Dataset):
         # https://pytorch.org/tutorials/beginner/data_loading_tutorial.html
         img_path = self.root + "/train_imgs/" + row["id"] + ".png"
         img = read_image(img_path, mode = ImageReadMode.GRAY)
-        img = img.unsqueeze(1)
+        # img = img.unsqueeze(0)
 
         if self.transform:
             img = self.transform(img)

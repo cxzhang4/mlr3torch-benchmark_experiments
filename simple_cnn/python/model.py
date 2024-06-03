@@ -25,7 +25,7 @@ class CorrCNN(nn.Module):
         x = torch.relu(self.conv3(x))
         x = F.avg_pool2d(x, kernel_size=2)
 
-        x = torch.flatten(x, start_dim = 2)
+        x = torch.flatten(x, start_dim = 1)
 
         x = F.relu(self.fc1(x))
 
