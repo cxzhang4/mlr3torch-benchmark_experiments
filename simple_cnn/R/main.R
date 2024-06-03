@@ -7,8 +7,8 @@ n_epochs = 2
 batch_size = 64
 lr = 0.01
 
-print("torch:")
-print(time_torch(n_epochs, batch_size, lr))
+# print("torch:")
+# print(time_torch(n_epochs, batch_size, lr))
 
-# print("mlr3torch:")
-# print(time_mlr3torch(n_epochs, batch_size, lr))
+print("mlr3torch:")
+print(time_mlr3torch(n_epochs, batch_size, lr))
