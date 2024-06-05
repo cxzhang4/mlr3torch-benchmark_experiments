@@ -1,4 +1,5 @@
 library(here)
+libray(magrittr)
 
 source(here("simple_cnn", "download_data.R"))
 

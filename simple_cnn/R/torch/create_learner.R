@@ -14,22 +14,22 @@ output_dim = 1
 #     },
 
 #     forward = function(x) {
-#         x |>
-#         self$conv1() |>
-#         nnf_relu() |>
-#         nnf_avg_pool2d(2) |>
+#         x %>%
+#         self$conv1() %>%
+#         nnf_relu() %>%
+#         nnf_avg_pool2d(2) %>%
 
-#         self$conv2() |>
-#         nnf_relu() |>
-#         nnf_avg_pool2d(2) |>
+#         self$conv2() %>%
+#         nnf_relu() %>%
+#         nnf_avg_pool2d(2) %>%
 
-#         self$conv3() |>
-#         nnf_relu() |>
-#         nnf_avg_pool2d(2) |>
+#         self$conv3() %>%
+#         nnf_relu() %>%
+#         nnf_avg_pool2d(2) %>%
 
-#         torch_flatten(start_dim = 2) |>
-#         self$fc1() |>
-#         nnf_relu() |>
+#         torch_flatten(start_dim = 2) %>%
+#         self$fc1() %>%
+#         nnf_relu() %>%
 
 #         self$fc2()
 #     }

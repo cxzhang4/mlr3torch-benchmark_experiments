@@ -17,7 +17,7 @@ root = file.path(tempdir(), "correlation")
 
 train_ds = guess_the_correlation_dataset(
   root = root,
-  transform = function(img) crop_axes(img) |> add_channel_dim(),
+  transform = function(img) crop_axes(img) %>% add_channel_dim(),
   indexes = trn_idx,
   download = TRUE
 )
@@ -26,14 +26,14 @@ train_ds = guess_the_correlation_dataset(
 ```{r}
 valid_ds = guess_the_correlation_dataset(
   root = root,
-  transform = function(img) crop_axes(img) |> add_channel_dim(),
+  transform = function(img) crop_axes(img) %>% add_channel_dim(),
   indexes = val_idx,
   download = FALSE
 )
 
 test_ds = guess_the_correlation_dataset(
   root = root,
-  transform = function(img) crop_axes(img) |> add_channel_dim(),
+  transform = function(img) crop_axes(img) %>% add_channel_dim(),
   indexes = tst_idx,
   download = FALSE
 )
@@ -68,7 +68,7 @@ To access the first batch, we create an iterator from the `DataLoader` and ask t
 Even if we did not want to plot this batch, doing this would be useful for, e.g. checking that the dimensions of the batch look how you expect them to.
 
 ```{r}
-batch = dataloader_make_iter(train_dl) |> dataloader_next()
+batch = dataloader_make_iter(train_dl) %>% dataloader_next()
 
 dim(batch$x)
 dim(batch$y)
@@ -79,16 +79,16 @@ par(mfrow = c(8, 8), mar = rep(0, 4))
 
 images = as.array(batch$x$squeeze(2))
 
-images |>
-  purrr::array_tree(1) |>
-  purrr::map(as.raster) |>
+images %>%
+  purrr::array_tree(1) %>%
+  purrr::map(as.raster) %>%
   purrr::iwalk(~{plot(.x)})
 ```
 
 View the ground truth labels for each item in the batch:
 
 ```{r}
-batch$y |> as.numeric() |> round(digits = 2)
+batch$y %>% as.numeric() %>% round(digits = 2)
 ```
 
 ```{r}
@@ -133,22 +133,22 @@ corr_cnn = nn_module(
   },
   
   forward = function(x) {
-    x |>
-      self$conv1() |>
-      nnf_relu() |>
-      nnf_avg_pool2d(2) |>
+    x %>%
+      self$conv1() %>%
+      nnf_relu() %>%
+      nnf_avg_pool2d(2) %>%
       
-      self$conv2() |>
-      nnf_relu() |>
-      nnf_avg_pool2d(2) |>
+      self$conv2() %>%
+      nnf_relu() %>%
+      nnf_avg_pool2d(2) %>%
       
-      self$conv3() |>
-      nnf_relu() |>
-      nnf_avg_pool2d(2) |>
+      self$conv3() %>%
+      nnf_relu() %>%
+      nnf_avg_pool2d(2) %>%
       
-      torch_flatten(start_dim = 2) |>
-      self$fc1() |>
-      nnf_relu() |>
+      torch_flatten(start_dim = 2) %>%
+      self$fc1() %>%
+      nnf_relu() %>%
       
       self$fc2()
   }
@@ -196,11 +196,11 @@ If you wanted to train the model "manually", you would do something like this fo
 `setup()` specifies the loss function and optimization algorithm.
 
 ```{r}
-fitted = corr_cnn |>
+fitted = corr_cnn %>%
   setup(
     loss = function(y_hat, y_true) nnf_mse_loss(y_hat, y_true$unsqueeze(2)),
     optimizer = optim_adam
-  ) |>
+  ) %>%
   fit(train_dl, epochs = 10, valid_data = test_dl)
 ```
 
