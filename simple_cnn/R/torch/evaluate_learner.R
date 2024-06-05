@@ -5,15 +5,15 @@
 
 # predict on validation set
 # loss = rep(.Machine$double.xmax, times = valid_dl$.length())
-valid_loss = c()
+# valid_loss = torch_empty()
 coro::loop(for (b in valid_dl) {
     output = learner_torch_cnn(b[[1]])
 
     batch_loss = nnf_mse_loss(output$squeeze(2), b[[2]], reduction = "none")
 
-    valid_loss = c(valid_loss, batch_loss)
+    # valid_loss = torch_cat(valid_loss, batch_loss)
 })
 
-print(mean(valid_loss))
+print(torch_mean(batch_loss))
 
 # print loss 

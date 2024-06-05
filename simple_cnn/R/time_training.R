@@ -19,5 +19,7 @@ time_mlr3torch = function(n_epochs, batch_size, lr) {
     source(here("simple_cnn", "R", "mlr3torch", "train_learner.R"))
     elapsed_time_mlr3torch = proc.time() - start_time_mlr3torch
 
+    source(here("simple_cnn", "R", "mlr3torch", "evaluate_learner.R"))
+
     return(elapsed_time_mlr3torch)
 }
