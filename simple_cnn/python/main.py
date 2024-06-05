@@ -6,7 +6,7 @@ import time
 import custom_transforms
 import model
 
-n_epochs = 2
+n_epochs = 1
 batch_size = 64
 lr = 0.01
 
@@ -30,7 +30,7 @@ transforms_for_corr_images = transforms.Compose([
     # custom_transforms.AddChannelDimension()
 ])
 
-trn_idx = range(0, 10000)
+trn_idx = range(0, 1000)
 # val_idx = range(10001, 15000)
 # tst_idx = range(15001, 20000)
 
@@ -39,8 +39,8 @@ train_ds = GuessTheCorrelationDataset(root = "data/correlation/guess-the-correla
                                       transform = transforms_for_corr_images,
                                       indexes = trn_idx)
 
-print(train_ds.__getitem__(0)[0].shape)
-print(train_ds.__getitem__(0)[1])
+# print(train_ds.__getitem__(0)[0].shape)
+# print(train_ds.__getitem__(0)[1])
 
 train_dataloader = torch.utils.data.DataLoader(train_ds, batch_size=batch_size)
 
