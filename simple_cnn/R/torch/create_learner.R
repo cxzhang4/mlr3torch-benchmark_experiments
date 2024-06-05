@@ -2,15 +2,15 @@
 input_dim = prod(dim(train_torch_ds[1]$x))
 output_dim = 1
 
-# learner_torch_cnn <- nn_module(
+# learner_torch_cnn = nn_module(
 #     "CorrCNN",
 #     initialize = function() {
-#         self$conv1 <- nn_conv2d(in_channels = 1, out_channels = 32, kernel_size = 3)
-#         self$conv2 <- nn_conv2d(in_channels = 32, out_channels = 64, kernel_size = 3)
-#         self$conv3 <- nn_conv2d(in_channels = 64, out_channels = 128, kernel_size = 3)
+#         self$conv1 = nn_conv2d(in_channels = 1, out_channels = 32, kernel_size = 3)
+#         self$conv2 = nn_conv2d(in_channels = 32, out_channels = 64, kernel_size = 3)
+#         self$conv3 = nn_conv2d(in_channels = 64, out_channels = 128, kernel_size = 3)
 
-#         self$fc1 <- nn_linear(in_features = 14 * 14 * 128, out_features = 128)
-#         self$fc2 <- nn_linear(in_features = 128, out_features = 1)
+#         self$fc1 = nn_linear(in_features = 14 * 14 * 128, out_features = 128)
+#         self$fc2 = nn_linear(in_features = 128, out_features = 1)
 #     },
 
 #     forward = function(x) {
@@ -35,7 +35,7 @@ output_dim = 1
 #     }
 # )
 
-learner_torch_cnn <- nn_sequential(
+learner_torch_cnn = nn_sequential(
     nn_conv2d(in_channels = 1, out_channels = 32, kernel_size = 3),
     nn_relu(),
     nn_avg_pool2d(2),
@@ -51,4 +51,4 @@ learner_torch_cnn <- nn_sequential(
     nn_linear(in_features = 128, out_features = 1)
 )
 
-opt <- optim_adam(learner_torch_cnn$parameters, lr = lr)
+opt = optim_adam(learner_torch_cnn$parameters, lr = lr)

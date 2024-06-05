@@ -1,7 +1,7 @@
 input_dim = prod(dim(train_torch_ds[1]$x))
 output_dim = 1
 
-learner_torch_mlp <- nn_sequential(
+learner_torch_mlp = nn_sequential(
   nn_flatten(),
   nn_linear(input_dim, 20),
   nn_relu(),
@@ -12,6 +12,6 @@ learner_torch_mlp <- nn_sequential(
 
 library(coro)
 
-opt <- optim_adam(learner_torch_mlp$parameters, lr = lr)
+opt = optim_adam(learner_torch_mlp$parameters, lr = lr)
 
 # function(lr)

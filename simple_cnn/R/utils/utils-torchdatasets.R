@@ -1,13 +1,13 @@
-kaggle_download <- function(name, token = NULL) {
+kaggle_download = function(name, token = NULL) {
 
   if ("kaggle" %in% pins::board_list()) {
-    file <- pins::pin_get(board = "kaggle", name,
+    file = pins::pin_get(board = "kaggle", name,
                           extract = FALSE)
   } else if (!is.null(token)) {
     pins::board_register_kaggle(name="torchdatasets-kaggle", token = token,
                                 cache = tempfile(pattern = "dir"))
     on.exit({pins::board_deregister("torchdatasets-kaggle")}, add = TRUE)
-    file <- pins::pin_get(name,
+    file = pins::pin_get(name,
                           board = "torchdatasets-kaggle",
                           extract = FALSE)
   } else {
@@ -17,18 +17,18 @@ kaggle_download <- function(name, token = NULL) {
   file
 }
 
-download_file <- function(url, destfile, ...) {
+download_file = function(url, destfile, ...) {
   withr::with_options(new = list(timeout = max(600, getOption("timeout"))), {
     utils::download.file(url, destfile, ...)
   })
   destfile
 }
 
-maybe_download <- function(url, root, name, extract_fun, download) {
-  data_path <- fs::path_expand(fs::path(root, name))
+maybe_download = function(url, root, name, extract_fun, download) {
+  data_path = fs::path_expand(fs::path(root, name))
 
   if (!fs::dir_exists(data_path) && download) {
-    tmp <- tempfile()
+    tmp = tempfile()
     download_file(url, tmp)
     fs::dir_create(fs::path_dir(data_path), recurse = TRUE)
     extract_fun(tmp, data_path)
@@ -40,7 +40,7 @@ maybe_download <- function(url, root, name, extract_fun, download) {
   data_path
 }
 
-unzip2 <- function(path, exdir) {
+unzip2 = function(path, exdir) {
   if (grepl("linux", R.version$os)) {
     utils::unzip(path, exdir = exdir)
   } else {
