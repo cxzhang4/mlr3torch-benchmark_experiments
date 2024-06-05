@@ -64,7 +64,7 @@ guess_the_correlation_dataset_mlr3torch <- torch::dataset(
 
 # arbitrarily define indices
 trn_idx <- 1:10000
-val_idx <- 10001:15000
+val_idx <- 10001:11000
 tst_idx <- 15001:20000
 
 # helper functions for data transformation

@@ -5,7 +5,7 @@ import custom_transforms
 from data import GuessTheCorrelationDataset
 import time
 
-n_epochs = 10
+n_epochs = 2
 batch_size = 64
 lr = 0.01
 

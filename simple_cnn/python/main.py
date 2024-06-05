@@ -22,7 +22,7 @@ learner_torch_cnn = model.CorrCNN()
 
 # train the learner
 
-loss_fn = torch.nn.MSELoss()
+loss_fn = nn.MSELoss()
 optimizer = torch.optim.Adam(learner_torch_cnn.parameters(), lr = lr)
 
 transforms_for_corr_images = transforms.Compose([
@@ -39,8 +39,8 @@ train_ds = GuessTheCorrelationDataset(root = "data/correlation/guess-the-correla
                                       transform = transforms_for_corr_images,
                                       indexes = trn_idx)
 
-# print(train_ds.__getitem__(0)[0].shape)
-# print(train_ds.__getitem__(0)[1])
+print(train_ds.__getitem__(0)[0].shape)
+print(train_ds.__getitem__(0)[1])
 
 train_dataloader = torch.utils.data.DataLoader(train_ds, batch_size=batch_size)
 
@@ -48,6 +48,7 @@ start_time = time.time()
 for i in range(n_epochs):
     learner_torch_cnn.train()
     for i, (img, target) in enumerate(train_dataloader):
+        # print(img)
         optimizer.zero_grad()
         img = img.float()
         y_pred = learner_torch_cnn(img)

@@ -34,3 +34,5 @@ learner_torch_cnn <- nn_module(
         self$fc2()
     }
 )
+
+opt <- optim_adam(learner_torch_cnn$parameters, lr = lr)
