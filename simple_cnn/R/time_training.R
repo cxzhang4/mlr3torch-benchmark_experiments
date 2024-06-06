@@ -1,5 +1,3 @@
-library(here)
-
 time_torch = function(n_epochs, batch_size, lr) {
     source(here("simple_cnn", "R", "torch", "set_up_data.R"))
     source(here("simple_cnn", "R", "torch", "create_learner.R"))

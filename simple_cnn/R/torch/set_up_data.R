@@ -7,8 +7,8 @@ library(torchdatasets)
 data_dir = here("data", "correlation")
 
 # arbitrarily define indices
-trn_idx = 1:1000
-val_idx = 10001:10064
+trn_idx = 1:10000
+val_idx = 10001:15000
 tst_idx = 15001:20000
 
 # helper functions for data transformation
