@@ -2,8 +2,6 @@ import torch
 from torch import nn
 import torch.nn.functional as F
 
-# for MLP, just use nn.Sequential directly
-
 class CorrCNN(nn.Module):
     """A CNN for guessing the correlation of a scatter plot."""
 
