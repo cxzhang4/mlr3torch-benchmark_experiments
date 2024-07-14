@@ -55,11 +55,8 @@ unzip2 = function(path, exdir) {
 }
 # end copy
 
-data_dir = here("data", "correlation")
-
-should_download = list.files(data_dir) == 0
-
-maybe_download(
+get_data = function(data_dir, should_download) {
+  maybe_download(
       root = data_dir,
       name = "guess-the-correlation",
       url = "https://storage.googleapis.com/torch-datasets/guess-the-correlation.zip",
@@ -70,3 +67,4 @@ maybe_download(
         unzip2(fs::path(data_path, "test_imgs.zip"), exdir = data_path)
       }
     )
+}

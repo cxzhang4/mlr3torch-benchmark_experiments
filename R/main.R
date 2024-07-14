@@ -3,46 +3,44 @@ library(torch)
 
 source(here("R", "get_data.R"))
 
-source(here("R", "torch", "set_up_data.R"))
-source(here("R", "torch", "create_learner.R"))
-source(here("R", "torch", "train_learner.R"))
+source(here("R", "torch", "data_setup.R"))
+source(here("R", "torch", "learner_creation.R"))
+source(here("R", "torch", "learner_training.R"))
 
-source(here("R", "mlr3torch", "set_up_data.R"))
-source(here("R", "mlr3torch", "create_learner.R"))
-source(here("R", "mlr3torch", "train_learner.R"))
+source(here("R", "mlr3torch", "data_setup.R"))
+source(here("R", "mlr3torch", "learner_creation.R"))
+source(here("R", "mlr3torch", "learner_training.R"))
 
 source(here("R", "time_training.R"))
 
 config = config::get()
 
+# get data if necessary
 data_dir = here("data", "correlation")
+should_download = list.files(data_dir) == 0
+get_data(data_dir, should_download)
 
 # arbitrarily define indices
 trn_idx = 1:(config$train_size)
 
-# get data (if necessary)
-
 # torch
+trn_idx = 1:(config$train_size)
+train_torch_ds = create_torch_ds(data_dir, trn_idx)
+train_dl = dataloader(train_torch_ds, batch_size = config$batch_size, shuffle = TRUE)
 
-# set up dataset and dataloader
+torch_learner = create_torch_learner(config$architecture_id)
+torch_opt = create_opt(torch_learner, config$lr)
 
-# define learner
-
-# begin time
-
-    # train learner
-
-# end time
-
+torch_results = time_torch(torch_learner, torch_opt, train_dl, config$n_epochs)
 
 # mlr3torch
+train_mlr3torch_ds = create_mlr3torch_dataset()
 
-# set up dataset and dataloader
+train_responses = fread(here(data_dir, "correlation", "guess-the-correlation", "train_responses.csv"))
+response_col_name = "corr"
+tsk_gtcorr = create_task_from_ds(train_mlr3torch_ds, train_responses, response_col_name)
 
 # define learner
+mlr3torch_learner = create_mlr3torch_learner(config$learner_id)
+mlr3torch_results = time_mlr3torch(torch_learner, torch_opt, train_dl, config$n_epochs)
 
-# begin time
-
-    # train learner
-
-# end time
