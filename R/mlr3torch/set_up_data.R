@@ -1,3 +1,5 @@
+# creates the dataset and dataloader
+
 library(data.table)
 library(torch)
 library(mlr3torch)
@@ -12,7 +14,7 @@ guess_the_correlation_dataset_mlr3torch = torch::dataset(
     self$transform = transform
     self$target_transform = target_transform
 
-    # donwload ----------------------------------------------------------
+    # download ----------------------------------------------------------
     data_path = maybe_download(
       root = root,
       name = "guess-the-correlation",
@@ -76,6 +78,15 @@ train_mlr3torch_ds = guess_the_correlation_dataset_mlr3torch(
   indexes = trn_idx,
   download = FALSE
 )
+
+create_mlr3torch_dataset = function() {
+  guess_the_correlation_dataset_mlr3torch(
+    root = data_dir,
+    transform = function(img) add_channel_dim(crop_axes(img)),
+    indexes = trn_idx,
+    download = FALSE
+  )
+}
 
 create_task_from_ds = function(ds, responses_dt, response_col_name) {
   dd_gtcorr = as_data_descriptor(ds, list(x = c(NA, 1, 130, 130)))

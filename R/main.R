@@ -1,23 +1,48 @@
 library(here)
 library(torch)
 
-source(here("R", "download_data.R"))
+source(here("R", "get_data.R"))
+
+source(here("R", "torch", "set_up_data.R"))
+source(here("R", "torch", "create_learner.R"))
+source(here("R", "torch", "train_learner.R"))
+
+source(here("R", "mlr3torch", "set_up_data.R"))
+source(here("R", "mlr3torch", "create_learner.R"))
+source(here("R", "mlr3torch", "train_learner.R"))
+
 source(here("R", "time_training.R"))
 
 config = config::get()
 
-print("torch:")
-source(here("R", "torch", "set_up_data.R"))
-train_dl = dataloader(train_torch_ds, batch_size = config$batch_size, shuffle = TRUE)
-learner_torch = create_learner(config$architecture_id)
-opt = create_opt(learner_torch, config$learning_rate)
-time_torch(learner_torch, opt, train_dl, config$n_epochs)
+data_dir = here("data", "correlation")
 
-# print("mlr3torch:")
-# source(here("R", "mlr3torch", "set_up_data.R"))
-# fread(here("data", "correlation/guess-the-correlation/train_responses.csv""))
+# arbitrarily define indices
+trn_idx = 1:(config$train_size)
 
-# write config and time to csv
+# get data (if necessary)
 
-# print("mlr3torch:")
-# print(time_mlr3torch(n_epochs, batch_size, lr))
+# torch
+
+# set up dataset and dataloader
+
+# define learner
+
+# begin time
+
+    # train learner
+
+# end time
+
+
+# mlr3torch
+
+# set up dataset and dataloader
+
+# define learner
+
+# begin time
+
+    # train learner
+
+# end time
