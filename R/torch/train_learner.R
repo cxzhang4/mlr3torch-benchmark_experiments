@@ -1,4 +1,4 @@
-train_learner = function(learner, optimizer, train_dl, n_epochs) {
+train_torch_learner = function(learner, optimizer, train_dl, n_epochs) {
     for (t in seq_len(n_epochs)) {
         coro::loop(for (b in train_dl) {
             opt$zero_grad()
