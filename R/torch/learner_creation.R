@@ -1,7 +1,3 @@
-# compute the dimension of the input from the data
-input_dim = prod(dim(train_torch_ds[1]$x))
-output_dim = 1
-
 create_torch_mlp = function() {
     nn_sequential(
         nn_flatten(),
@@ -32,10 +28,10 @@ create_torch_cnn = function() {
 }
 
 create_torch_learner = function(architecture_id) {
-    f (learner_id == "mlp") {
+  if (architecture_id == "mlp") {
     create_torch_mlp()
   }
-  else if (learner_id == "cnn") {
+  else if (architecture_id == "cnn") {
     create_torch_cnn()
   }
   else {
@@ -44,5 +40,5 @@ create_torch_learner = function(architecture_id) {
 }
 
 create_opt = function(learner, lr) {
-    optim_adam(learner$parameters, lr = lr)
+  optim_adam(learner$parameters, lr = lr)
 }

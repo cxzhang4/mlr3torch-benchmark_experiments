@@ -9,7 +9,7 @@ create_mlr3torch_mlp = function() {
     # training parameters
     batch_size     = batch_size,
     epochs         = n_epochs,
-    device         = "cpu",
+    device         = "auto",
     # Defining the optimizer, loss, and callbacks
     optimizer      = t_opt("adam", lr = lr),
     loss           = t_loss("mse"),
@@ -42,11 +42,11 @@ create_mlr3torch_cnn = function() {
   as_learner(graph_cnn)
 }
 
-create_mlr3torch_learner = function(learner_id) {
-  if (learner_id == "mlp") {
+create_mlr3torch_learner = function(architecture_id) {
+  if (architecture_id == "mlp") {
     create_mlr3torch_mlp()
   }
-  else if (learner_id == "cnn") {
+  else if (architecture_id == "cnn") {
     create_mlr3torch_cnn()
   }
   else {

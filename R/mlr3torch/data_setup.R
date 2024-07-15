@@ -1,7 +1,6 @@
 # creates the dataset and dataloader
 
 library(data.table)
-library(torch)
 library(mlr3torch)
 library(torchvision)
 
@@ -64,22 +63,12 @@ guess_the_correlation_dataset_mlr3torch = torch::dataset(
   }
 )
 
-# arbitrarily define indices
-trn_idx = 1:10000
-
 # helper functions for data transformation
 crop_axes = function(img) transform_crop(img, top = 0, left = 21, height = 131, width = 130) 
 add_channel_dim = function(img) img$unsqueeze(1)
 
 # no channel dimension
-train_mlr3torch_ds = guess_the_correlation_dataset_mlr3torch(
-  root = data_dir,
-  transform = function(img) add_channel_dim(crop_axes(img)),
-  indexes = trn_idx,
-  download = FALSE
-)
-
-create_mlr3torch_dataset = function() {
+create_mlr3torch_dataset = function(data_dir, trn_idx) {
   guess_the_correlation_dataset_mlr3torch(
     root = data_dir,
     transform = function(img) add_channel_dim(crop_axes(img)),
