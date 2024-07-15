@@ -77,8 +77,20 @@ create_mlr3torch_dataset = function(data_dir, trn_idx) {
   )
 }
 
-create_task_from_ds = function(ds, responses_dt, response_col_name) {
-  dd_gtcorr = as_data_descriptor(ds, list(x = c(NA, 1, 130, 130)))
+get_dd_dims = function(architecture_id) {
+  if (architecture_id == "mlp") {
+    c(NA, 16900)
+  }
+  else if (architecture_id == "cnn") {
+    c(NA, 1, 130, 130)
+  }
+  else {
+    print("invalid architecture id")
+  }
+}
+
+create_task_from_ds = function(ds, responses_dt, response_col_name, architecture_id) {
+  dd_gtcorr = as_data_descriptor(ds, list(x = get_dd_dims(architecture_id)))
 
   lt = lazy_tensor(dd_gtcorr)
 

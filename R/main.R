@@ -25,7 +25,7 @@ trn_idx = 1:(config$train_size)
 
 # torch
 trn_idx = 1:(config$train_size)
-train_torch_ds = create_torch_ds(data_dir, trn_idx)
+train_torch_ds = create_torch_ds(data_dir, trn_idx, config$architecture_id)
 input_dim = prod(dim(train_torch_ds[1]$x))
 output_dim = 1
 train_dl = dataloader(train_torch_ds, batch_size = config$batch_size, shuffle = TRUE)
@@ -40,7 +40,7 @@ train_mlr3torch_ds = create_mlr3torch_dataset(data_dir, trn_idx)
 
 train_responses = fread(here(data_dir, "guess-the-correlation", "train_responses.csv"))
 response_col_name = "corr"
-tsk_gtcorr = create_task_from_ds(train_mlr3torch_ds, train_responses, response_col_name)
+tsk_gtcorr = create_task_from_ds(train_mlr3torch_ds, train_responses, response_col_name, config$architecture_id)
 
 # define learner
 mlr3torch_learner = create_mlr3torch_learner(config$architecture_id, config$batch_size, config$n_epochs, 
