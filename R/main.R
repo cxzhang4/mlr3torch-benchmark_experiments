@@ -38,12 +38,13 @@ torch_results = time_torch(torch_learner, torch_opt, train_dl, config$n_epochs)
 # mlr3torch
 train_mlr3torch_ds = create_mlr3torch_dataset(data_dir, trn_idx)
 
-train_responses = fread(here(data_dir, "correlation", "guess-the-correlation", "train_responses.csv"))
+train_responses = fread(here(data_dir, "guess-the-correlation", "train_responses.csv"))
 response_col_name = "corr"
 tsk_gtcorr = create_task_from_ds(train_mlr3torch_ds, train_responses, response_col_name)
 
 # define learner
-mlr3torch_learner = create_mlr3torch_learner(config$learner_id)
+mlr3torch_learner = create_mlr3torch_learner(config$architecture_id, config$batch_size, config$n_epochs, 
+                                             config$learning_rate, config$accelerator)
 mlr3torch_results = time_mlr3torch(torch_learner, torch_opt, train_dl, config$n_epochs)
 
 # save results
