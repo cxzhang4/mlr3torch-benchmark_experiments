@@ -4,7 +4,7 @@ time_torch = function(learner, opt, train_dl, n_epochs) {
     )
 }
 
-time_mlr3torch = function(learner, tsk, n_epochs, batch_size, lr) {
+time_mlr3torch = function(learner, task) {
     system.time(
         train_mlr3torch_learner(learner, task)
     )

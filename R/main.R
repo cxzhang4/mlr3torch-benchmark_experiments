@@ -45,7 +45,7 @@ tsk_gtcorr = create_task_from_ds(train_mlr3torch_ds, train_responses, response_c
 # define learner
 mlr3torch_learner = create_mlr3torch_learner(config$architecture_id, config$batch_size, config$n_epochs, 
                                              config$learning_rate, config$accelerator)
-mlr3torch_results = time_mlr3torch(torch_learner, torch_opt, train_dl, config$n_epochs)
+mlr3torch_results = time_mlr3torch(mlr3torch_learner, tsk_gtcorr)
 
 # save results
 
