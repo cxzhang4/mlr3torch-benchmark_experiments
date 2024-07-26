@@ -3,7 +3,7 @@ library(here)
 source(here("simple_cnn", "download_data.R"))
 
 source(here("simple_cnn", "mlp", "time_training.R"))
-n_epochs = 10
+n_epochs = 1
 batch_size = 64
 lr = 0.01
 

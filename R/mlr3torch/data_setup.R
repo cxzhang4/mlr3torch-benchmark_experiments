@@ -68,21 +68,31 @@ crop_axes = function(img) transform_crop(img, top = 0, left = 21, height = 131, 
 add_channel_dim = function(img) img$unsqueeze(1)
 
 # no channel dimension
-create_mlr3torch_dataset = function(data_dir, trn_idx) {
-  guess_the_correlation_dataset_mlr3torch(
-    root = data_dir,
-    transform = function(img) add_channel_dim(crop_axes(img)),
-    indexes = trn_idx,
-    download = FALSE
-  )
+create_mlr3torch_dataset = function(data_dir, architecture_id, trn_idx) {
+  if (architecture_id == "mlp") {
+    guess_the_correlation_dataset_mlr3torch(
+      root = data_dir,
+      transform = function(img) torch_flatten(add_channel_dim(crop_axes(img))),
+      indexes = trn_idx,
+      download = FALSE
+    )
+  }
+  else if (architecture_id == "cnn") {
+    guess_the_correlation_dataset_mlr3torch(
+      root = data_dir,
+      transform = function(img) add_channel_dim(crop_axes(img)),
+      indexes = trn_idx,
+      download = FALSE
+    )
+  }
 }
 
 get_dd_dims = function(architecture_id) {
   if (architecture_id == "mlp") {
-    c(NA, 16900)
+    return(c(NA, 16900))
   }
   else if (architecture_id == "cnn") {
-    c(NA, 1, 130, 130)
+    return(c(NA, 1, 130, 130))
   }
   else {
     print("invalid architecture id")
@@ -90,6 +100,7 @@ get_dd_dims = function(architecture_id) {
 }
 
 create_task_from_ds = function(ds, responses_dt, response_col_name, architecture_id) {
+  dd_dims = get_dd_dims(architecture_id)
   dd_gtcorr = as_data_descriptor(ds, list(x = get_dd_dims(architecture_id)))
 
   lt = lazy_tensor(dd_gtcorr)

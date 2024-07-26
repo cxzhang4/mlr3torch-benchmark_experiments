@@ -33,10 +33,10 @@ train_dl = dataloader(train_torch_ds, batch_size = config$batch_size, shuffle = 
 torch_learner = create_torch_learner(config$architecture_id)
 torch_opt = create_opt(torch_learner, config$learning_rate)
 
-torch_results = time_torch(torch_learner, torch_opt, train_dl, config$n_epochs)
+torch_results = time_torch(torch_learner, torch_opt, config$accelerator, train_dl, config$n_epochs)
 
 # mlr3torch
-train_mlr3torch_ds = create_mlr3torch_dataset(data_dir, trn_idx)
+train_mlr3torch_ds = create_mlr3torch_dataset(data_dir, config$architecture_id, trn_idx)
 
 train_responses = fread(here(data_dir, "guess-the-correlation", "train_responses.csv"))
 response_col_name = "corr"
@@ -48,6 +48,18 @@ mlr3torch_learner = create_mlr3torch_learner(config$architecture_id, config$batc
 mlr3torch_results = time_mlr3torch(mlr3torch_learner, tsk_gtcorr)
 
 # save results
-
 print(torch_results)
 print(mlr3torch_results)
+
+config_vec = unlist(config)
+names(torch_results) = paste("torch", names(torch_results), sep = "_")
+names(mlr3torch_results) = paste("mlr3torch", names(mlr3torch_results), sep = "_")
+current_experiment_results = c(config_vec, torch_results, mlr3torch_results) %>%
+  t() %>%
+  data.frame() %>%
+  as.data.table()
+
+experiment_results = fread("experiment_results.csv")
+fwrite(rbind(experiment_results, current_experiment_results, fill = TRUE), "experiment_results.csv")
+
+# fwrite(current_experiment_results, "experiment_results.csv")

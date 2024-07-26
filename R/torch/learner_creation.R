@@ -1,11 +1,11 @@
 create_torch_mlp = function() {
     nn_sequential(
         nn_flatten(),
-        nn_linear(input_dim, 20),
+        nn_linear(16900, 20),
         nn_relu(),
         nn_linear(20, 20),
         nn_relu(),
-        nn_linear(20, output_dim)
+        nn_linear(20, 1)
     )
 }
 

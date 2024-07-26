@@ -1,6 +1,6 @@
-time_torch = function(learner, opt, train_dl, n_epochs) {
+time_torch = function(learner, opt, accelerator, train_dl, n_epochs) {
     system.time(
-        train_torch_learner(learner, opt, train_dl, n_epochs)
+        train_torch_learner(learner, opt, accelerator, train_dl, n_epochs)
     )
 }
 
