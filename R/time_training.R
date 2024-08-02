@@ -10,6 +10,21 @@ time_mlr3torch = function(learner, task) {
     )
 }
 
+# mark(
+#   ...,
+#   min_time = 60,
+#   iterations = NULL,
+#   min_iterations = 1,
+#   max_iterations = 10000,
+#   check = FALSE,
+#   memory = capabilities("profmem"),
+#   filter_gc = TRUE,
+#   relative = FALSE,
+#   time_unit = NULL,
+#   exprs = NULL,
+#   env = parent.frame()
+# )
+
 # TODO: decide how much logic we might want to implement here
 
 # source(here("R", "torch", "set_up_data.R"))
