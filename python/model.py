@@ -31,7 +31,7 @@ def create_cnn():
     )
     return cnn
 
-def create_learner(str: architecture_id):
+def create_learner(architecture_id):
     if architecture_id == "mlp":
         return create_mlp()
     if architecture_id == "cnn":

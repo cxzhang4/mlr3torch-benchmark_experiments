@@ -1,5 +1,5 @@
 default:
-  architecture_id: "mlp"
+  architecture_id: "cnn"
   accelerator: "cpu"
   n_epochs: 10
   batch_size: 64

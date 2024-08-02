@@ -4,50 +4,48 @@ import torchvision.transforms as transforms
 from data import GuessTheCorrelationDataset
 import time
 import custom_transforms
-import model
+from model import create_learner
+import hydra
 
-@hydra.main(version_base=None, config_path="", config_name="config")
-def main(cfg):
+@hydra.main(version_base=None, config_path="..", config_name="config")
+def main(config):
     # create a torch dataset
-
-    # create a learner
-    # TODO: compute input_dim instead of hard-coding it
-    # TODO: fix the transformations so that the true input dimension matches the hard-coded input dimension
-    input_dim = 16900
-    output_dim = 1
-
-    learner_torch_cnn = 
-
-    # train the learner
-
-    loss_fn = nn.MSELoss()
-    optimizer = torch.optim.Adam(learner_torch_cnn.parameters(), lr = lr)
-
     transforms_for_corr_images = transforms.Compose([
         custom_transforms.CustomCrop(top = 0, left = 21, height = 130, width = 130),
         # custom_transforms.AddChannelDimension()
     ])
 
-    trn_idx = range(0, 10000)
-
+    # TODO: change the data (add the flatten operation for MLP)
+    trn_idx = range(0, config.default.train_size)
     train_ds = GuessTheCorrelationDataset(root = "data/correlation/guess-the-correlation",
                                         responses_file_path = "train.csv",
                                         transform = transforms_for_corr_images,
                                         indexes = trn_idx)
+    train_dataloader = torch.utils.data.DataLoader(train_ds, batch_size=config.default.batch_size)
 
-    # print(train_ds.__getitem__(0)[0].shape)
-    # print(train_ds.__getitem__(0)[1])
+    # TODO: compute input_dim instead of hard-coding it
+    # TODO: fix the transformations so that the true input dimension matches the hard-coded input dimension
+    input_dim = 16900
+    output_dim = 1
+    learner = create_learner(config.default.architecture_id)
 
-    train_dataloader = torch.utils.data.DataLoader(train_ds, batch_size=batch_size)
+    DEVICE = config.default.accelerator
+    learner = learner.to(DEVICE)
+
+    loss_fn = nn.MSELoss()
+    optimizer = torch.optim.Adam(learner.parameters(), lr = config.default.learning_rate)
 
     start_time = time.time()
-    for i in range(n_epochs):
-        learner_torch_cnn.train()
+    for i in range(config.default.n_epochs):
+        learner.train()
         for i, (img, target) in enumerate(train_dataloader):
-            # print(img)
+            print(img.shape)
+            print(target.shape)
+            img, target = img.to(DEVICE), target.to(DEVICE)
+
             optimizer.zero_grad()
             img = img.float()
-            y_pred = learner_torch_cnn(img)
+            y_pred = learner(img)
             loss = loss_fn(torch.squeeze(y_pred), target.float())
             loss.backward()
             optimizer.step()

@@ -48,7 +48,9 @@ mlr3torch_learner = create_mlr3torch_learner(config$architecture_id, config$batc
 mlr3torch_results = time_mlr3torch(mlr3torch_learner, tsk_gtcorr)
 
 # save results
+print("torch")
 print(torch_results)
+print("mlr3torch")
 print(mlr3torch_results)
 
 config_vec = unlist(config)

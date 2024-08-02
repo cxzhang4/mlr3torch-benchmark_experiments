@@ -1,2 +1,5 @@
 architecture_id,accelerator,n_epochs,batch_size,learning_rate,train_size,torch_user.self,torch_sys.self,torch_elapsed,torch_user.child,torch_sys.child,mlr3torch_user.self,mlr3torch_sys.self,mlr3torch_elapsed,mlr3torch_user.child,mlr3torch_sys.child
 mlp,cpu,10,64,0.001,10000,107.133,8.057,113.889999999999,0,0,117.336,7.947,119.052,1.547,0.085
+mlp,mps,2,64,0.001,1000,1.751,0.208,2.984,0,0,2.109,0.15,2.375,0,0
+mlp,mps,10,64,0.001,10000,97.914,6.447,103.687,0,0,117.196,6.749,123.014,0,0
+cnn,cpu,10,64,0.001,10000,1822.748,315.978,861.537,0,0,1854.084,307.735,999.108,0,0

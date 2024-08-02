@@ -31,6 +31,6 @@ class GuessTheCorrelationDataset(Dataset):
         if self.transform:
             img = self.transform(img)
 
-        label = row["corr"].astype(float)
+        label = row["corr"].astype("float32")
 
         return img, label
