@@ -103,18 +103,22 @@ dependencies:
   - libnghttp2=1.58.0=h47da74e_1
   - libnpp=11.8.0.86=0
   - libnpp-dev=11.8.0.86=0
+  - libnsl=2.0.1=hd590300_0
   - libnvjpeg=11.9.0.86=0
   - libnvjpeg-dev=11.9.0.86=0
   - libopenblas=0.3.27=pthreads_hac2b453_1
   - libpng=1.6.43=h2797004_0
   - libsanitizer=14.1.0=hcba0ae0_0
+  - libsqlite=3.46.0=hde9e2c9_0
   - libssh2=1.11.0=h0841786_0
   - libstdcxx-devel_linux-64=14.1.0=h5d3d1c9_100
   - libstdcxx-ng=14.1.0=hc0a3c3a_0
   - libtiff=4.6.0=h1dd3fc0_3
+  - libunwind=1.6.2=h9c3ff4c_0
   - libuuid=2.38.1=h0b41bf4_0
   - libwebp-base=1.4.0=hd590300_0
   - libxcb=1.16=hd590300_0
+  - libxcrypt=4.4.36=hd590300_1
   - libzlib=1.3.1=h4ab18f5_1
   - make=4.3=hd18ef5c_1
   - ncurses=6.5=h59595ed_0
@@ -122,15 +126,20 @@ dependencies:
   - openssl=3.3.1=h4bc722e_2
   - pango=1.54.0=h4c5309f_1
   - pcre2=10.44=h0f59acf_0
+  - pip=24.2=pyhd8ed1ab_0
   - pixman=0.43.2=h59595ed_0
   - pthread-stubs=0.4=h36c2ea0_1001
+  - py-spy=0.3.14=h87a5ac0_0
+  - python=3.11.9=hb806964_0_cpython
   - r-base=4.4.1=h745b8e0_14
   - readline=8.2=h8228510_1
   - sed=4.8=he412f7d_0
+  - setuptools=72.1.0=pyhd8ed1ab_0
   - sysroot_linux-64=2.17=h4a8ded7_16
   - tk=8.6.13=noxft_h4845f30_101
   - tktable=2.10=h8bc8fbc_6
   - tzdata=2024a=h0c530f3_0
+  - wheel=0.43.0=pyhd8ed1ab_1
   - xorg-kbproto=1.0.7=h7f98852_1002
   - xorg-libice=1.1.1=hd590300_0
   - xorg-libsm=1.2.4=h7391055_0
