@@ -1,17 +1,18 @@
-time_torch = function(learner, opt, accelerator, train_dl, n_epochs) {
-    system.time(
-        train_torch_learner(learner, opt, accelerator, train_dl, n_epochs)
-    )
-}
+# time_torch = function(learner, opt, accelerator, train_dl, n_epochs) {
+#     system.time(
+#         train_torch_learner(learner, opt, accelerator, train_dl, n_epochs)
+#     )
+# }
 
-time_mlr3torch = function(learner, task) {
-    system.time(
-        train_mlr3torch_learner(learner, task)
-    )
-}
+# time_mlr3torch = function(learner, task) {
+#     system.time(
+#         train_mlr3torch_learner(learner, task)
+#     )
+# }
 
 # mark(
-#   ...,
+#   train_torch_learner(learner, opt, accelerator, train_dl, n_epochs),
+#   train_mlr3torch_learner(learner, task),
 #   min_time = 60,
 #   iterations = NULL,
 #   min_iterations = 1,
@@ -24,13 +25,3 @@ time_mlr3torch = function(learner, task) {
 #   exprs = NULL,
 #   env = parent.frame()
 # )
-
-# TODO: decide how much logic we might want to implement here
-
-# source(here("R", "torch", "set_up_data.R"))
-# source(here("R", "torch", "create_learner.R"))
-# source(here("R", "torch", "train_learner.R"))
-
-# source(here("R", "mlr3torch", "set_up_data.R"))
-# source(here("R", "mlr3torch", "create_learner.R"))
-# source(here("R", "mlr3torch", "train_learner.R"))

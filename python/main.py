@@ -7,7 +7,7 @@ import custom_transforms
 from model import create_learner
 import hydra
 
-@hydra.main(version_base=None, config_path="..", config_name="config")
+@hydra.main(version_base=None, config_path=".", config_name="config")
 def main(config):
     # create a torch dataset
     transforms_for_corr_images = transforms.Compose([
