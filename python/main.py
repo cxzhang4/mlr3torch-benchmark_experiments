@@ -22,11 +22,6 @@ def main(config):
                                         indexes = trn_idx)
     train_dataloader = torch.utils.data.DataLoader(train_ds, batch_size=config.default.batch_size)
 
-    print(train_ds.__getitem__(0)[0].shape)
-    # TODO: compute input_dim instead of hard-coding it
-    # TODO: fix the transformations so that the true input dimension matches the hard-coded input dimension
-    # input_dim = 16900
-    # output_dim = 1
     learner = create_learner(config.default.architecture_id)
 
     DEVICE = config.default.accelerator
@@ -39,8 +34,6 @@ def main(config):
     for i in range(config.default.n_epochs):
         learner.train()
         for i, (img, target) in enumerate(train_dataloader):
-            print(img.shape)
-            print(target.shape)
             img, target = img.to(DEVICE), target.to(DEVICE)
 
             optimizer.zero_grad()
