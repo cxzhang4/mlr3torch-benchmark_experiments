@@ -2,6 +2,6 @@ default:
   architecture_id: "cnn"
   accelerator: "cuda"
   n_epochs: 1
-  batch_size: 64
+  batch_size: 16
   learning_rate: 0.001
   train_size: 100

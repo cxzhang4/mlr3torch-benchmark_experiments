@@ -24,7 +24,7 @@ def create_cnn():
         nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3),
         nn.ReLU(),
         nn.AvgPool2d(2),
-        nn.Flatten(start_dim=2),
+        nn.Flatten(start_dim=1),
         nn.Linear(in_features=14 * 14 * 128, out_features=128),
         nn.ReLU(),
         nn.Linear(in_features=128, out_features=1)
