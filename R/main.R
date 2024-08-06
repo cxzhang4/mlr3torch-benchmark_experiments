@@ -2,6 +2,8 @@ library(here)
 library(torch)
 library(bench)
 library(readr)
+library(magrittr)
+library(tibble)
 
 source(here("R", "get_data.R"))
 
@@ -56,18 +58,11 @@ benchmark_results = mark(
 
 print(benchmark_results)
 
-# config_vec = unlist(config)
-# names(torch_results) = paste("torch", names(torch_results), sep = "_")
-# names(mlr3torch_results) = paste("mlr3torch", names(mlr3torch_results), sep = "_")
-# current_experiment_results = c(config_vec, torch_results, mlr3torch_results) %>%
-#   t() %>%
-#   data.frame() %>%
-#   as.data.table()
+config_vec = unlist(config)
+config_cols = as_tibble(t(config))
 
-# experiment_results = fread("experiment_results.csv")
-# fwrite(rbind(experiment_results, current_experiment_results, fill = TRUE), "experiment_results.csv")
-
-# current_experiment_results = benchmark_results
+benchmark_results = benchmark_results %>%
+  bind_cols(config_cols)
 
 set_lists_to_chars <- function(x) {
     if(class(x) == 'list') {
@@ -78,7 +73,4 @@ set_lists_to_chars <- function(x) {
     return(y)
 }
 
-# current_experiment_results = data.frame(lapply(benchmark_results, set_lists_to_chars), stringsAsFactors = F)
-
-# fwrite(current_experiment_results, "experiment_results_bench.csv")
 write_delim(benchmark_results, "experiment_results_bench.csv")

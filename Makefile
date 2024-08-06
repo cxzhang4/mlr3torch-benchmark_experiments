@@ -10,3 +10,9 @@ time_r:
 time_python:
 	cp config.yml python/config.yaml
 	python python/main.py
+
+run_benchmark:
+	export CUDA_VISIBLE_DEVICES=2
+	Rscript R/main.R 
+	cp config.yml python/config.yaml
+	python python/main.py
