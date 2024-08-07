@@ -68,8 +68,10 @@ benchmark_results = benchmark_results %>%
 
 output_file_name = "benchmark_results-r.csv"
 if (file.exists(output_file_name)) {
-  prev_results = read_csv(output_file_name)
-  write_delim(prev_results %>% bind_rows(benchmark_results), output_file_name)
+  prev_results = read_csv(output_file_name, 
+    col_types = c("c", "c", "d", "d", "d", "c", "c", "i", "d", "i")
+  )
+  write_csv(prev_results %>% bind_rows(benchmark_results), output_file_name)
 } else {
-  write_delim(benchmark_results, output_file_name)
+  write_csv(benchmark_results, output_file_name)
 }
