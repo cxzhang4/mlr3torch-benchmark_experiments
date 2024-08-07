@@ -49,7 +49,7 @@ benchmark_results = mark(
   min_iterations = 1,
   max_iterations = 10000,
   check = FALSE,
-  memory = capabilities("profmem"),
+  memory = FALSE, # TODO: determine what this arg should be 
   filter_gc = TRUE,
   relative = FALSE,
   time_unit = NULL,
@@ -63,8 +63,8 @@ config_vec = unlist(config)
 config_cols = as_tibble(t(config_vec))
 
 benchmark_results = benchmark_results %>%
-  bind_cols(config_cols) %>%
-  mutate(across(everything(), ~ifelse(is.atomic(.), ., as.character(.))))
+  select(min, median, `itr/sec`, n_itr, total_time) %>%
+  bind_cols(config_cols)
 
 output_file_name = "benchmark_results-r.csv"
 if (file.exists(output_file_name)) {
