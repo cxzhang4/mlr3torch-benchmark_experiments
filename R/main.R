@@ -64,9 +64,10 @@ config_cols = as_tibble(t(config_vec))
 
 benchmark_results = benchmark_results %>%
   select(min, median, `itr/sec`, n_itr, total_time) %>%
+  mutate(across(everything(), ~ ifelse(is.numeric(.), ., as.character(.)))) %>%
   bind_cols(config_cols)
 
-output_file_name = "benchmark_results-r.csv"
+output_file_name = here("results", "benchmark_results-r.csv")
 if (file.exists(output_file_name)) {
   prev_results = read_csv(output_file_name, 
     col_types = c("c", "c", "d", "d", "d", "c", "c", "i", "d", "i")

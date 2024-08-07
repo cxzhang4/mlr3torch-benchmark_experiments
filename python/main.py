@@ -58,7 +58,7 @@ def main(config):
     experiment_results.insert(len(experiment_results.columns), "elapsed_time", elapsed_time)
 
 
-    output_file_name = "benchmark_results-python.csv"
+    output_file_name = "results/benchmark_results-python.csv"
     if os.path.isfile(output_file_name):
         previous_results = pd.read_csv(output_file_name)
         pd.concat([previous_results, experiment_results]).to_csv(output_file_name, index = False)
