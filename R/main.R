@@ -4,6 +4,7 @@ library(bench)
 library(readr)
 library(magrittr)
 library(tibble)
+library(dplyr)
 
 source(here("R", "get_data.R"))
 
@@ -43,7 +44,7 @@ mlr3torch_learner = create_mlr3torch_learner(config$architecture_id, config$batc
 benchmark_results = mark(
   train_torch_learner(torch_learner, torch_opt, config$accelerator, train_dl, config$n_epochs),
   train_mlr3torch_learner(mlr3torch_learner, tsk_gtcorr),
-  min_time = 5,
+  min_time = 50,
   iterations = NULL,
   min_iterations = 1,
   max_iterations = 10000,
@@ -59,18 +60,16 @@ benchmark_results = mark(
 print(benchmark_results)
 
 config_vec = unlist(config)
-config_cols = as_tibble(t(config))
+config_cols = as_tibble(t(config_vec))
 
 benchmark_results = benchmark_results %>%
-  bind_cols(config_cols)
+  bind_cols(config_cols) %>%
+  mutate(across(everything(), ~ifelse(is.atomic(.), ., as.character(.))))
 
-set_lists_to_chars <- function(x) {
-    if(class(x) == 'list') {
-      y <- paste(unlist(x[1]), sep='', collapse=', ')
-    } else {
-      y <- x 
-    }
-    return(y)
+output_file_name = "benchmark_results-r.csv"
+if (file.exists(output_file_name)) {
+  prev_results = read_csv(output_file_name)
+  write_delim(prev_results %>% bind_rows(benchmark_results), output_file_name)
+} else {
+  write_delim(benchmark_results, output_file_name)
 }
-
-write_delim(benchmark_results, "experiment_results_bench.csv")

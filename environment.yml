@@ -189,12 +189,14 @@ dependencies:
   - openjpeg=2.5.2=h488ebb8_0
   - openssl=3.3.1=h4bc722e_2
   - p11-kit=0.24.1=hc5aa10d_0
+  - packaging=24.1=pyhd8ed1ab_0
   - pandas=2.2.2=py311h14de704_1
   - pango=1.54.0=h4c5309f_1
   - pcre2=10.44=h0f59acf_0
   - pillow=10.4.0=py311h82a398c_0
   - pip=24.2=pyhd8ed1ab_0
   - pixman=0.43.2=h59595ed_0
+  - polars=1.2.1=py311hf29da40_0
   - pthread-stubs=0.4=h36c2ea0_1001
   - pugixml=1.14=h59595ed_0
   - py-spy=0.3.14=h87a5ac0_0
@@ -256,7 +258,6 @@ dependencies:
       - antlr4-python3-runtime==4.9.3
       - hydra-core==1.3.2
       - omegaconf==2.3.0
-      - packaging==24.1
 variables:
   PRECXX11ABI: '1'
   CUDA_HOME: /home/zhangc/miniforge3/envs/mlr3torch

@@ -6,6 +6,10 @@ import time
 import custom_transforms
 from model import create_learner
 import hydra
+import os
+import polars as pl
+import pandas as pd
+import yaml
 
 @hydra.main(version_base=None, config_path=".", config_name="config")
 def main(config):
@@ -44,7 +48,22 @@ def main(config):
             optimizer.step()
     end_time = time.time()
 
-    print(end_time - start_time)
+    elapsed_time = end_time - start_time
+
+    print(elapsed_time)
+
+    config_stream = open("python/config.yaml", "r")
+    config = yaml.load(config_stream, Loader=yaml.CLoader)
+    experiment_results = pd.DataFrame(config["default"], index = [0])
+    experiment_results.insert(len(experiment_results.columns), "elapsed_time", elapsed_time)
+
+
+    output_file_name = "benchmark_results-python.csv"
+    if os.path.isfile(output_file_name):
+        previous_results = pd.read_csv(output_file_name)
+        pd.concat([previous_results, experiment_results]).to_csv(output_file_name, index = False)
+    else:
+        experiment_results.to_csv(output_file_name, index = False)
 
 if __name__ == "__main__":
     main()

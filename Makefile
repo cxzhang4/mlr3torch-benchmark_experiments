@@ -4,13 +4,6 @@
 ## Remove this if you want to use this Makefile for real targets
 .PHONY: *
 
-time_r:
-	Rscript R/main.R 
-
-time_python:
-	cp config.yml python/config.yaml
-	python python/main.py
-
 run_benchmark:
 	export CUDA_VISIBLE_DEVICES=2
 	Rscript R/main.R 
