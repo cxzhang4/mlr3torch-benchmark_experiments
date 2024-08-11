@@ -1,3 +1,5 @@
-min,median,itr/sec,n_itr,total_time,architecture_id,accelerator,n_epochs,batch_size,learning_rate,train_size,library
-351.68ms,375.61ms,1.807151334495206,19,10.5s,cnn,cuda,1,64,0.001,100,torch
-  1.02s,  1.05s,0.9267803985014809,10,10.8s,cnn,cuda,1,64,0.001,100,mlr3torch
+library,min,median,itr/sec,n_itr,total_time,architecture_id,accelerator,n_epochs,batch_size,learning_rate,train_size
+torch,135ms,148ms,6.3096090418501065,64,10.1s,cnn,mps,1,64,0.001,100
+mlr3torch,593ms,647ms,1.4937130499020637,15,10s,cnn,mps,1,64,0.001,100
+torch,135ms,148ms,6.3096090418501065,64,10.1s,cnn,mps,1,64,0.001,100
+mlr3torch,593ms,647ms,1.4937130499020637,15,10s,cnn,mps,1,64,0.001,100

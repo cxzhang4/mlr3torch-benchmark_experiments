@@ -18,6 +18,8 @@ source(here("R", "mlr3torch", "learner_training.R"))
 
 source(here("R", "time_training.R"))
 
+source(here("R", "read_bench_results.R"))
+
 config = config::get()
 
 data_dir = here("data", "correlation")
@@ -59,20 +61,18 @@ benchmark_results = mark(
 
 print(benchmark_results)
 
-config_vec = unlist(config)
-config_cols = as_tibble(t(config_vec))
+config_tbl = unclass(config) %>%
+  as_tibble()
 
-benchmark_results = benchmark_results %>%
-  select(min, median, `itr/sec`, n_itr, total_time) %>%
-  bind_cols(config_cols, tibble(library = c("torch", "mlr3torch")))
+benchmark_results_output = tibble(library = c("torch", "mlr3torch")) %>%
+  bind_cols(benchmark_results) %>%
+  select(library, min, median, `itr/sec`, n_itr, total_time) %>%
+  bind_cols(config_tbl)
 
 output_file_name = here("results", "benchmark_results-r.csv")
 if (file.exists(output_file_name)) {
-  prev_results = read_csv(output_file_name, 
-    col_types = c("d", "d", "d", "i", "d", 
-                  "c", "c", "i", "i", "d", "i")
-  )
-  write_csv(prev_results %>% bind_rows(benchmark_results), output_file_name)
+  prev_results = read_bench_results(output_file_name)
+  write_csv(prev_results %>% bind_rows(benchmark_results_output), output_file_name)
 } else {
-  write_csv(benchmark_results, output_file_name)
+  write_csv(benchmark_results_output, output_file_name)
 }
