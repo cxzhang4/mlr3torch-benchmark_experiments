@@ -1,5 +1,5 @@
 default:
-  architecture_id: "cnn"
+  architecture_id: "mlp"
   accelerator: "cuda"
   n_epochs: 1
   batch_size: 64
