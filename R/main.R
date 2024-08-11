@@ -44,7 +44,7 @@ mlr3torch_learner = create_mlr3torch_learner(config$architecture_id, config$batc
 benchmark_results = mark(
   train_torch_learner(torch_learner, torch_opt, config$accelerator, train_dl, config$n_epochs),
   train_mlr3torch_learner(mlr3torch_learner, tsk_gtcorr),
-  min_time = 50,
+  min_time = 10,
   iterations = NULL,
   min_iterations = 1,
   max_iterations = 10000,
@@ -64,13 +64,13 @@ config_cols = as_tibble(t(config_vec))
 
 benchmark_results = benchmark_results %>%
   select(min, median, `itr/sec`, n_itr, total_time) %>%
-  mutate(across(everything(), ~ ifelse(is.numeric(.), ., as.character(.)))) %>%
-  bind_cols(config_cols)
+  bind_cols(config_cols, tibble(library = c("torch", "mlr3torch")))
 
 output_file_name = here("results", "benchmark_results-r.csv")
 if (file.exists(output_file_name)) {
   prev_results = read_csv(output_file_name, 
-    col_types = c("c", "c", "d", "d", "d", "c", "c", "i", "d", "i")
+    col_types = c("d", "d", "d", "i", "d", 
+                  "c", "c", "i", "i", "d", "i")
   )
   write_csv(prev_results %>% bind_rows(benchmark_results), output_file_name)
 } else {
