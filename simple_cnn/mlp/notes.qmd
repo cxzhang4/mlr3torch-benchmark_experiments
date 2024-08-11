@@ -1,9 +1,0 @@
-TODO: prediction and loss fn evaluation on the same validation dataset to verify that all models are doing the same thing
-
-TODO: try to install on GPU server from pre-built binaries
-
-TODO: save experiment results in some document
-
-    e.g. a Quarto document that runs the 
-
-    e.g. a csv that tracks the lr, epochs, etc. for each experiment

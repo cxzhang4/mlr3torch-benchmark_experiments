@@ -46,7 +46,7 @@ mlr3torch_learner = create_mlr3torch_learner(config$architecture_id, config$batc
 benchmark_results = mark(
   train_torch_learner(torch_learner, torch_opt, config$accelerator, train_dl, config$n_epochs),
   train_mlr3torch_learner(mlr3torch_learner, tsk_gtcorr),
-  min_time = 10,
+  min_time = 60,
   iterations = NULL,
   min_iterations = 1,
   max_iterations = 10000,
