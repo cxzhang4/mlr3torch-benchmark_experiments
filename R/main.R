@@ -37,8 +37,9 @@ train_dl = dataloader(train_torch_ds, batch_size = config$batch_size, shuffle = 
 torch_learner = create_torch_learner(config$architecture_id)
 torch_opt = create_opt(torch_learner, config$learning_rate)
 
-print("torch:")
+print("torch learner:")
 print(torch_learner)
+print(paste("torch batch size:", train_dl$batch_size), sep = " ")
 
 train_mlr3torch_ds = create_mlr3torch_dataset(data_dir, config$architecture_id, trn_idx)
 train_responses = fread(here(data_dir, "guess-the-correlation", "train_responses.csv"))
@@ -65,13 +66,13 @@ benchmark_results = mark(
   env = parent.frame()
 )
 
-print("mlr3torch:")
+print("mlr3torch learner:")
 if ("GraphLearner" %in% class(mlr3torch_learner)) {
   print(mlr3torch_learner$base_learner()$model$network)
-  print(mlr3torch_learner$base_learner()$param_set$get_values()$batch_size)
+  print(paste("mlr3torch batch size:", mlr3torch_learner$base_learner()$param_set$get_values()$batch_size, sep = " "))
 } else {
   print(mlr3torch_learner$model$network)
-  print(mlr3torch_learner$param_set$get_values()$batch_size)
+  print(paste("mlr3torch batch size:", mlr3torch_learner$param_set$get_values()$batch_size, sep = " "))
 }
 
 print(benchmark_results)
