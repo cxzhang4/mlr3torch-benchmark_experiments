@@ -5,3 +5,4 @@ valid_batch <- function(b) {
   loss <- nn_mse_loss(output, target)
   loss$item()
 }
+
