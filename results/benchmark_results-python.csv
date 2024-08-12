@@ -1,3 +1,5 @@
 architecture_id,accelerator,n_epochs,batch_size,learning_rate,train_size,elapsed_time
 cnn,cuda,10,64,0.001,10000,33.703356981277466
 mlp,cuda,10,64,0.001,10000,31.140045404434204
+cnn,cuda,15,64,0.005,10000,50.316899061203
+mlp,cuda,15,64,0.005,10000,46.55635118484497

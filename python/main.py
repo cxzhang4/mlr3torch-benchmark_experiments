@@ -4,7 +4,7 @@ import torchvision.transforms as transforms
 from data import GuessTheCorrelationDataset
 import time
 import custom_transforms
-from model import create_learner
+from learners import create_learner
 import hydra
 import os
 import polars as pl
