@@ -28,7 +28,6 @@ get_data(data_dir, should_download)
 
 # TODO: print out the number of parameters
 
-
 trn_idx = 1:(config$train_size)
 train_torch_ds = create_torch_ds(data_dir, trn_idx, config$architecture_id)
 input_dim = prod(dim(train_torch_ds[1]$x))
@@ -37,6 +36,9 @@ train_dl = dataloader(train_torch_ds, batch_size = config$batch_size, shuffle = 
 
 torch_learner = create_torch_learner(config$architecture_id)
 torch_opt = create_opt(torch_learner, config$learning_rate)
+
+print("torch:")
+print(torch_learner)
 
 train_mlr3torch_ds = create_mlr3torch_dataset(data_dir, config$architecture_id, trn_idx)
 train_responses = fread(here(data_dir, "guess-the-correlation", "train_responses.csv"))
@@ -49,7 +51,7 @@ mlr3torch_learner = create_mlr3torch_learner(config$architecture_id, config$batc
 benchmark_results = mark(
   train_torch_learner(torch_learner, torch_opt, config$accelerator, train_dl, config$n_epochs),
   train_mlr3torch_learner(mlr3torch_learner, tsk_gtcorr),
-  min_time = 60,
+  min_time = 1,
   iterations = NULL,
   min_iterations = 1,
   max_iterations = 10000,
@@ -61,6 +63,9 @@ benchmark_results = mark(
   exprs = NULL,
   env = parent.frame()
 )
+
+print("mlr3torch:")
+print(mlr3torch_learner$model$network)
 
 print(benchmark_results)
 

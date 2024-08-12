@@ -32,6 +32,11 @@ def main(config):
     learner = learner.to(DEVICE)
 
     # TODO: print out the number of parameters
+    pytorch_total_params = sum(p.numel() for p in learner.parameters())
+    pytorch_total_trainable_params = sum(p.numel() for p in learner.parameters() if p.requires_grad)
+
+    print("total number of parameters for Pytorch network: " + str(pytorch_total_params))
+    print("total number of trainable parameters for Pytorch network: " + str(pytorch_total_trainable_params))
 
     loss_fn = nn.MSELoss()
     optimizer = torch.optim.Adam(learner.parameters(), lr = config.default.learning_rate)
