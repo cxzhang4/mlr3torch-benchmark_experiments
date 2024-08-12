@@ -59,6 +59,8 @@ def main(config):
 
     print(elapsed_time)
 
+    # TODO: validation
+
     config_stream = open("python/config.yaml", "r")
     config = yaml.load(config_stream, Loader=yaml.CLoader)
     experiment_results = pd.DataFrame(config["default"], index = [0])
