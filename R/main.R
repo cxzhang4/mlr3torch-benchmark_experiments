@@ -68,8 +68,10 @@ benchmark_results = mark(
 print("mlr3torch:")
 if ("GraphLearner" %in% class(mlr3torch_learner)) {
   print(mlr3torch_learner$base_learner()$model$network)
+  print(mlr3torch_learner$base_learner()$param_set$get_values()$batch_size)
 } else {
   print(mlr3torch_learner$model$network)
+  print(mlr3torch_learner$param_set$get_values()$batch_size)
 }
 
 print(benchmark_results)
