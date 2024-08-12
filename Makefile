@@ -9,3 +9,5 @@ run_benchmark:
 	Rscript R/main.R 
 	cp config.yml python/config.yaml
 	python python/main.py
+
+# target for rendering the "report"

@@ -26,6 +26,9 @@ data_dir = here("data", "correlation")
 should_download = list.files(data_dir) == 0
 get_data(data_dir, should_download)
 
+# TODO: print out the number of parameters
+
+
 trn_idx = 1:(config$train_size)
 train_torch_ds = create_torch_ds(data_dir, trn_idx, config$architecture_id)
 input_dim = prod(dim(train_torch_ds[1]$x))

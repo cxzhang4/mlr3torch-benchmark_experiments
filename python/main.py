@@ -31,6 +31,8 @@ def main(config):
     DEVICE = config.default.accelerator
     learner = learner.to(DEVICE)
 
+    # TODO: print out the number of parameters
+
     loss_fn = nn.MSELoss()
     optimizer = torch.optim.Adam(learner.parameters(), lr = config.default.learning_rate)
 
