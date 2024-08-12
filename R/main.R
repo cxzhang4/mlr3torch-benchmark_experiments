@@ -45,7 +45,8 @@ train_responses = fread(here(data_dir, "guess-the-correlation", "train_responses
 response_col_name = "corr"
 tsk_gtcorr = create_task_from_ds(train_mlr3torch_ds, train_responses, response_col_name, config$architecture_id)
 
-mlr3torch_learner = create_mlr3torch_learner(config$architecture_id, config$batch_size, config$n_epochs, 
+mlr3torch_learner = create_mlr3torch_learner(tsk_gtcorr, torch_learner,
+                                             config$architecture_id, config$batch_size, config$n_epochs,
                                              config$learning_rate, config$accelerator)
 
 benchmark_results = mark(
@@ -65,7 +66,11 @@ benchmark_results = mark(
 )
 
 print("mlr3torch:")
-print(mlr3torch_learner$model$network)
+if ("GraphLearner" %in% class(mlr3torch_learner)) {
+  print(mlr3torch_learner$base_learner()$model$network)
+} else {
+  print(mlr3torch_learner$model$network)
+}
 
 print(benchmark_results)
 

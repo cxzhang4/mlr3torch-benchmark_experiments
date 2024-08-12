@@ -16,21 +16,6 @@ create_mlr3torch_mlp = function(batch_size, n_epochs, lr, accelerator) {
     # predict type (required by logloss)
     predict_type = "response"
   )
-  
-  lrn("regr.mlp",
-      # defining network parameters
-      activation     = nn_relu,
-      neurons        = c(20, 20),
-      # training parameters
-      batch_size     = batch_size,
-      epochs         = n_epochs,
-      device         = accelerator,
-      # Defining the optimizer, loss, and callbacks
-      optimizer      = t_opt("adam", lr = lr),
-      loss           = t_loss("mse"),
-      # predict type (required by logloss)
-      predict_type = "response"
-  )
 }
 
 create_mlr3torch_cnn = function(batch_size, n_epochs, lr, accelerator) {
@@ -57,11 +42,30 @@ create_mlr3torch_cnn = function(batch_size, n_epochs, lr, accelerator) {
   as_learner(graph_cnn)
 }
 
-create_mlr3torch_learner = function(architecture_id, batch_size, n_epochs, lr, accelerator) {
+create_copy_from_nn_module = function(task, torch_learner, architecture_id, batch_size, n_epochs, lr, accelerator) {
+  ingress_tokens = list(
+    input = TorchIngressToken(task$feature_names, batchgetter_num, get_dd_dims(architecture_id))
+  )
+  
+  lrn("regr.torch_model",
+    network = torch_learner,
+    ingress_tokens = ingress_tokens,
+    # training parameters
+    batch_size     = batch_size,
+    epochs         = n_epochs,
+    device         = accelerator,
+    # Defining the optimizer, loss, and callbacks
+    optimizer      = t_opt("adam", lr = lr),
+    loss           = t_loss("mse")
+  )
+}
+
+create_mlr3torch_learner = function(task, torch_learner, architecture_id, batch_size, n_epochs, lr, accelerator) {
   if (architecture_id == "mlp") {
     create_mlr3torch_mlp(batch_size, n_epochs, lr, accelerator)
   }
   else if (architecture_id == "cnn") {
+    # create_copy_from_nn_module(task, torch_learner, batch_size, n_epochs, lr, accelerator)
     create_mlr3torch_cnn(batch_size, n_epochs, lr, accelerator)
   }
   else {
