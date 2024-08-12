@@ -32,3 +32,4 @@ Quarto document that describes "this".
 
 Modify the output format. A new folder for every run. 
 
+Add an environment for non-CUDA machines, if necessary.
