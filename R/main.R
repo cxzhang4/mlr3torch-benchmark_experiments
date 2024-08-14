@@ -79,14 +79,21 @@ print(benchmark_results)
 config_tbl = unclass(config) %>%
   as_tibble()
 
+library_tbl = list(library = c("torch", "mlr3torch")) %>%
+  as_tibble()
+
 benchmark_results_output = tibble(library = c("torch", "mlr3torch")) %>%
   bind_cols(benchmark_results) %>%
-  select(library, min, median, `itr/sec`, n_itr, total_time) %>%
-  bind_cols(config_tbl)
+  select(total_time) %>%
+  bind_cols(library_tbl, ., config_tbl)
 
-# TODO: write only to a new file
-# TODO: write to a new directory for every run
 output_dir_name = output_dir_name()
 dir.create(output_dir_name)
 output_file_name = here(output_dir_name, "benchmark_results.csv")
 write_csv(benchmark_results_output, output_file_name)
+
+output_dir_name_file = "output_dir_name.txt"
+invisible(file.create(output_dir_name_file))
+writeLines(output_dir_name, output_dir_name_file)
+
+invisible(file.copy(from = "config.yml", to = output_dir_name))

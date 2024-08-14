@@ -7,7 +7,6 @@ output_dir_name = function() {
 
   while (dir.exists(dir_path)) {
     run_num = run_num + 1
-    print(run_num)
     dir_path = here("results", paste0(date_str, "-", run_num))
   }
 

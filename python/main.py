@@ -56,24 +56,22 @@ def main(config):
             optimizer.step()
     end_time = time.time()
 
-    elapsed_time = end_time - start_time
+    elapsed_time = round(end_time - start_time, 2)
 
     print(elapsed_time)
-
-    # TODO: validation
 
     config_stream = open("python/config.yaml", "r")
     config = yaml.load(config_stream, Loader=yaml.CLoader)
     experiment_results = pd.DataFrame(config["default"], index = [0])
-    experiment_results.insert(len(experiment_results.columns), "elapsed_time", elapsed_time)
+    experiment_results.insert(len(experiment_results.columns), "total_time", elapsed_time)
+    experiment_results.insert(0, "library", "pytorch")
 
+    output_dir_name_file = open("output_dir_name.txt", "r")
+    output_dir_name = output_dir_name_file.readline().rstrip()
 
-    output_file_name = "results/benchmark_results-python.csv"
-    if os.path.isfile(output_file_name):
-        previous_results = pd.read_csv(output_file_name)
-        pd.concat([previous_results, experiment_results]).to_csv(output_file_name, index = False)
-    else:
-        experiment_results.to_csv(output_file_name, index = False)
+    output_file_name = output_dir_name + "/benchmark_results.csv"
+    previous_results = pd.read_csv(output_file_name)
+    pd.concat([previous_results, experiment_results]).to_csv(output_file_name, index = False)
 
 if __name__ == "__main__":
     main()
