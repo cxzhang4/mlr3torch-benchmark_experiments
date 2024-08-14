@@ -25,6 +25,7 @@ def main(config):
                                         transform = transforms_for_corr_images,
                                         indexes = trn_idx)
     train_dataloader = torch.utils.data.DataLoader(train_ds, batch_size=config.default.batch_size)
+    print("PyTorch batch size:" + str(train_dataloader.batch_size))
 
     learner = create_learner(config.default.architecture_id)
 

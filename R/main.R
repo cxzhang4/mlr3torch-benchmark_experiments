@@ -83,6 +83,8 @@ benchmark_results_output = tibble(library = c("torch", "mlr3torch")) %>%
   select(library, min, median, `itr/sec`, n_itr, total_time) %>%
   bind_cols(config_tbl)
 
+# TODO: write only to a new file
+# TODO: write to a new directory for every run
 output_file_name = here("results", "benchmark_results-r.csv")
 if (file.exists(output_file_name)) {
   prev_results = read_bench_results(output_file_name)

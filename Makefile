@@ -4,10 +4,13 @@
 ## Remove this if you want to use this Makefile for real targets
 .PHONY: *
 
-run_benchmark:
+benchmark:
+	mamba activate mlr3torch
 	export CUDA_VISIBLE_DEVICES=2
 	Rscript R/main.R 
 	cp config.yml python/config.yaml
 	python python/main.py
 
-# target for rendering the "report"
+report:
+	benchmark
+	# a quarto command
