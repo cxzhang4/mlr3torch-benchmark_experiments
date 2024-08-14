@@ -1,3 +1,0 @@
-total_time,architecture_id,accelerator,n_epochs,batch_size,learning_rate,train_size
-3.36s,cnn,cuda,1,64,0.005,100
-1.16s,cnn,cuda,1,64,0.005,100

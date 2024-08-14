@@ -1,3 +1,0 @@
-library,min,median,itr/sec,n_itr,total_time,architecture_id,accelerator,n_epochs,batch_size,learning_rate,train_size
-torch,3.43s,3.43s,0.2916005506676834,1,3.43s,cnn,cuda,1,64,0.005,100
-mlr3torch,1.13s,1.13s,0.8817572953619648,1,1.13s,cnn,cuda,1,64,0.005,100

@@ -11,7 +11,7 @@ benchmark:
 	python python/main.py
 
 report:
-	# a quarto command
+	quarto render index.qmd --to html 
 	
 all:
 	benchmark report
