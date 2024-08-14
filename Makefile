@@ -5,7 +5,6 @@
 .PHONY: *
 
 benchmark:
-	mamba activate mlr3torch
 	export CUDA_VISIBLE_DEVICES=2
 	Rscript R/main.R 
 	cp config.yml python/config.yaml

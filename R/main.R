@@ -19,6 +19,7 @@ source(here("R", "mlr3torch", "learner_training.R"))
 source(here("R", "time_training.R"))
 
 source(here("R", "read_bench_results.R"))
+source(here("R", "output_dir_name.R"))
 
 config = config::get()
 
@@ -85,10 +86,7 @@ benchmark_results_output = tibble(library = c("torch", "mlr3torch")) %>%
 
 # TODO: write only to a new file
 # TODO: write to a new directory for every run
-output_file_name = here("results", "benchmark_results-r.csv")
-if (file.exists(output_file_name)) {
-  prev_results = read_bench_results(output_file_name)
-  write_csv(prev_results %>% bind_rows(benchmark_results_output), output_file_name)
-} else {
-  write_csv(benchmark_results_output, output_file_name)
-}
+output_dir_name = output_dir_name()
+dir.create(output_dir_name)
+output_file_name = here(output_dir_name, "benchmark_results.csv")
+write_csv(benchmark_results_output, output_file_name)
