@@ -11,5 +11,7 @@ benchmark:
 	python python/main.py
 
 report:
-	benchmark
 	# a quarto command
+	
+all:
+	benchmark report

@@ -1,0 +1,46 @@
+---
+title: "Analyzing the running time performance of PyTorch, `torch`, and `mlr3torch`"
+description: |
+  Compare the running time performance of PyTorch, `torch`, and `mlr3torch`.
+author:
+  - name: Carson Zhang
+    url: https://carsonzhang.com
+format:
+  html:
+    embed-resources: true
+---
+
+```{r}
+library(here)
+library(flextable)
+library(readr)
+library(magrittr)
+library(dplyr)
+```
+
+```{r}
+source(here("R", "output_dir_name.R"))
+```
+
+```{r}
+# TODO: figure out why this doesn't work when you run a second time
+result_dir_name = result_dir_name()
+result_file_name = here(result_dir_name, "benchmark_results.csv")
+benchmark_results = read_csv(result_file_name) %>%
+  select(library, total_time)
+```
+
+```{r}
+# flextable(benchmark_results)
+
+knitr::kable(
+  x = benchmark_results,
+  digits = 2,
+  col.names = c("Library", "Running time (seconds)"))
+```
+
+
+## Appendix
+
+"Instead, we will want to count operations a little more carefully. The unit we will use to describe the running time of an algorithm is the number of atomic operations. This is not exactly a unit of time, but at some level, the atomic operations that we will describe can all be performed in a small number of clock cycles on your CPU and so correspond to a real amount of time.
+(Please don’t say runtime as a replacement for running time. These are not the same thing!)" - Sheehy page 56, A First Course in Data Structures using Python
