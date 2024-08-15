@@ -12,7 +12,9 @@ R packages: running `R/install_packages.R` will install all R dependencies.
 
 `mamba activate mlr3torch`
 
-Modify the parameters in `config.yml` as you wish. Run `make run_benchmark` (see the Makefile for the commands).
+Modify the parameters in `config.yml` as you wish. 
+
+Run `make benchmark`, then `make report`. 
 
 Do NOT touch `python/config.yaml`.
 
