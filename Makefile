@@ -11,7 +11,10 @@ benchmark:
 	python python/main.py
 
 report:
-	quarto render index.qmd --to html 
+	Rscript R/write_config_to_qmd.R
+	quarto render index.qmd
+	head -n -10 index.qmd > index_tmp.qmd 
+	mv index_tmp.qmd index.qmd
 	
 all:
 	benchmark report
