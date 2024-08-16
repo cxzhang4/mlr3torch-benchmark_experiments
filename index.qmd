@@ -28,7 +28,7 @@ source(here("R", "output_dir_name.R"))
 
 ```{r include = FALSE}
 # TODO: figure out why this doesn't work when you run a second time
-result_dir_name = result_dir_name()
+result_dir_name = most_recent_result_name()
 result_file_name = here(result_dir_name, "benchmark_results.csv")
 benchmark_results = read_csv(result_file_name) %>%
   mutate(total_time = as_bench_time(total_time)) %>%
@@ -48,7 +48,7 @@ knitr::kable(
 
 Meaning...
 
-```{r}
+```{r echo = FALSE}
 pytorch_time = benchmark_results %>%
   filter(library == "pytorch") %>%
   pull(total_time)
