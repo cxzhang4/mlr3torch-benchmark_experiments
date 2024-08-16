@@ -28,7 +28,7 @@ benchmark_results = read_csv(result_file_name) %>%
 
 ## Setup
 
-We use the `benchmark` package to measure the time required for training models. This process is applied to the ["Guess the correlation"](https://torch.mlverse.org/start/guess_the_correlation/) dataset.
+We use the `benchmark` package to measure the time required for training models. This process is applied to the ["Guess the correlation"](https://torch.mlverse.org/start/guess_the_correlation/) dataset. The code is adapted (in some cases, copied) from the linked tutorial.
 
 ```{r echo = FALSE}
 knitr::kable(
@@ -47,5 +47,5 @@ default:
   train_size: 1000
 ```
 
-Manually copy in the `config.yml` file from the appropriate results directory.
+Manually copy in the `config.yml` file from the appropriate results directory. (TODO: do this programmatically)
 
