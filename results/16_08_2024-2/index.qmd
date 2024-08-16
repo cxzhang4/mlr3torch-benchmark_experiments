@@ -1,0 +1,73 @@
+---
+title: "Analyzing the running time performance of PyTorch, `torch`, and `mlr3torch`"
+description: |
+  Compare the running time performance of PyTorch, `torch`, and `mlr3torch`.
+format:
+  html:
+    embed-resources: true
+---
+
+## TODO
+
+- Modify this so that it gets multiple results, especially since different ones illustrate different concepts.
+
+```{r include = FALSE}
+library(here)
+library(readr)
+library(magrittr)
+library(dplyr)
+library(bench)
+```
+
+```{r include = FALSE}
+source(here("R", "output_dir_name.R"))
+```
+
+```{r include = FALSE}
+# TODO: figure out why this doesn't work when you run a second time
+result_dir_name = most_recent_result_name()
+result_file_name = here(result_dir_name, "benchmark_results.csv")
+benchmark_results = read_csv(result_file_name) %>%
+  mutate(total_time = as_bench_time(total_time)) %>%
+  select(library, total_time)
+```
+
+## Setup
+
+We use the `benchmark` package to measure the time required for training models. 
+This process is applied to the ["Guess the correlation"](https://torch.mlverse.org/start/guess_the_correlation/) dataset. 
+The code is adapted (in some cases, copied) from the linked tutorial.
+
+Generally, the more meaningful benchmarks were run using the CNN from the tutorial (3,304,193 parameters).
+The code also supports a small multi-layer perceptron with 2 hidden layers, each with 20 neurons. 
+It is relatively straightforward to add different architectures.
+
+```{r echo = FALSE}
+knitr::kable(
+  x = benchmark_results,
+  digits = 2,
+  col.names = c("Library", "Running time"))
+```
+
+Meaning, for comparison purposes...
+
+```{r echo = FALSE}
+pytorch_time = benchmark_results %>%
+  filter(library == "pytorch") %>%
+  pull(total_time)
+
+mlr3torch_time = benchmark_results %>%
+  filter(library == "mlr3torch") %>%
+  pull(total_time)
+
+benchmark_results %>%
+  mutate(pytorch_x_times_faster_than = unclass(total_time / pytorch_time),
+          mlr3torch_x_times_slower_than = unclass(mlr3torch_time / total_time)) %>%
+  select(-c(total_time)) %>%
+  knitr::kable(
+    x = .,
+    digits = 2,
+    col.names = c("Library", "Pytorch is faster by a factor of", "mlr3torch is slower by a factor of"))
+```
+
+The experiment was run with the following parameters.
