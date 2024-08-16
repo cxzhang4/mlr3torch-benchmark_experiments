@@ -13,5 +13,11 @@ benchmark:
 report:
 	Rscript R/write_config_to_qmd.R
 	quarto render index.qmd
+	Rscript R/write_qmd_to_results_subdir.R
 	head -n -10 index.qmd > index_tmp.qmd 
 	mv index_tmp.qmd index.qmd
+	Rscript R/write_qmd_to_results_subdir.R
+
+all: 
+	$(MAKE) benchmark
+	$(MAKE) report
