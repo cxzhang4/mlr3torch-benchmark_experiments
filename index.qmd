@@ -54,11 +54,11 @@ pytorch_time = benchmark_results %>%
   pull(total_time)
 
 benchmark_results %>%
-  mutate(pytorch_x_times_faster_than = total_time / pytorch_time) %>%
+  mutate(pytorch_x_times_faster_than = unclass(total_time / pytorch_time)) %>%
   knitr::kable(
     x = .,
     digits = 2,
-    col.names = c("Library", "Running time"))
+    col.names = c("Library", "Running time", "Pytorch is factor by a factor of"))
 ```
 
 ```{r}
@@ -67,11 +67,11 @@ mlr3torch_time = benchmark_results %>%
   pull(total_time)
 
 benchmark_results %>%
-  mutate(mlr3torch_x_times_slower_than = mlr3torch_time / total_time) %>%
+  mutate(mlr3torch_x_times_slower_than = unclass(mlr3torch_time / total_time)) %>%
   knitr::kable(
     x = .,
     digits = 2,
-    col.names = c("Library", "Running time"))
+    col.names = c("Library", "Running time", "mlr3torch is slower by a factor of"))
 ```
 
 The experiment was run with the following parameters.
