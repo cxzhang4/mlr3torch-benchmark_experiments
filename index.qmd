@@ -36,3 +36,12 @@ knitr::kable(
   digits = 2,
   col.names = c("Library", "Running time (seconds)"))
 ```
+
+```{.yaml filename="config.yml"}
+default:
+  architecture_id: "cnn"
+  accelerator: "cuda"
+  n_epochs: 5
+  batch_size: 64
+  learning_rate: 0.005
+  train_size: 1000

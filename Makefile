@@ -10,11 +10,8 @@ benchmark:
 	cp config.yml python/config.yaml
 	python python/main.py
 
-report:
+report: benchmark
 	Rscript R/write_config_to_qmd.R
 	quarto render index.qmd
 	head -n -10 index.qmd > index_tmp.qmd 
 	mv index_tmp.qmd index.qmd
-	
-all:
-	benchmark report

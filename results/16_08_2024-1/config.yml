@@ -1,7 +1,0 @@
-default:
-  architecture_id: "cnn"
-  accelerator: "mps"
-  n_epochs: 1
-  batch_size: 64
-  learning_rate: 0.005
-  train_size: 100
