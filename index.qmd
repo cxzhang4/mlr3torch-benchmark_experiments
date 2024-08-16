@@ -7,11 +7,19 @@ format:
     embed-resources: true
 ---
 
+## TODO
+
+- Modify this so that it gets the most recent benchmark results, not just the most recent run from today. 
+  The report generation should not be so tightly coupled to the benchmark itself.
+
+- Modify this so that it gets multiple results, especially since different ones illustrate different concepts.
+
 ```{r include = FALSE}
 library(here)
 library(readr)
 library(magrittr)
 library(dplyr)
+library(bench)
 ```
 
 ```{r include = FALSE}
@@ -23,6 +31,7 @@ source(here("R", "output_dir_name.R"))
 result_dir_name = result_dir_name()
 result_file_name = here(result_dir_name, "benchmark_results.csv")
 benchmark_results = read_csv(result_file_name) %>%
+  mutate(total_time = as_bench_time(total_time)) %>%
   select(library, total_time)
 ```
 
@@ -34,14 +43,45 @@ We use the `benchmark` package to measure the time required for training models.
 knitr::kable(
   x = benchmark_results,
   digits = 2,
-  col.names = c("Library", "Running time (seconds)"))
+  col.names = c("Library", "Running time"))
 ```
+
+Meaning...
+
+```{r}
+pytorch_time = benchmark_results %>%
+  filter(library == "pytorch") %>%
+  pull(total_time)
+
+benchmark_results %>%
+  mutate(pytorch_x_times_faster_than = total_time / pytorch_time) %>%
+  knitr::kable(
+    x = .,
+    digits = 2,
+    col.names = c("Library", "Running time"))
+```
+
+```{r}
+mlr3torch_time = benchmark_results %>%
+  filter(library == "mlr3torch") %>%
+  pull(total_time)
+
+benchmark_results %>%
+  mutate(mlr3torch_x_times_slower_than = mlr3torch_time / total_time) %>%
+  knitr::kable(
+    x = .,
+    digits = 2,
+    col.names = c("Library", "Running time"))
+```
+
+The experiment was run with the following parameters.
 
 ```{.yaml filename="config.yml"}
 default:
   architecture_id: "cnn"
   accelerator: "cuda"
-  n_epochs: 5
+  n_epochs: 10
   batch_size: 64
   learning_rate: 0.005
-  train_size: 1000
+  train_size: 10000
+```

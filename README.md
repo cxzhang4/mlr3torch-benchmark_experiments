@@ -20,18 +20,10 @@ Do NOT touch `python/config.yaml`.
 
 ## TODO
 
-- Verify the number of parameters in each network is the same (done)
-
 - "actually training the network"
 
     - similar validation loss? (TODO: adjust mlr3torch code to use the "split ==" condition)
 
-- Verify batch size (done)
-
-- Number of epochs (done)
-
 Quarto document that describes "this". 
-
-Modify the output format. A new folder for every run. 
 
 Add an environment for non-CUDA machines, if necessary.
