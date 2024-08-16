@@ -53,35 +53,18 @@ pytorch_time = benchmark_results %>%
   filter(library == "pytorch") %>%
   pull(total_time)
 
-benchmark_results %>%
-  mutate(pytorch_x_times_faster_than = unclass(total_time / pytorch_time)) %>%
-  knitr::kable(
-    x = .,
-    digits = 2,
-    col.names = c("Library", "Running time", "Pytorch is factor by a factor of"))
-```
-
-```{r}
 mlr3torch_time = benchmark_results %>%
   filter(library == "mlr3torch") %>%
   pull(total_time)
 
 benchmark_results %>%
-  mutate(mlr3torch_x_times_slower_than = unclass(mlr3torch_time / total_time)) %>%
+  mutate(pytorch_x_times_faster_than = unclass(total_time / pytorch_time),
+          mlr3torch_x_times_slower_than = unclass(mlr3torch_time / total_time)) %>%
+  select(-c(total_time)) %>%
   knitr::kable(
     x = .,
     digits = 2,
-    col.names = c("Library", "Running time", "mlr3torch is slower by a factor of"))
+    col.names = c("Library", "Pytorch is faster by a factor of", "mlr3torch is slower by a factor of"))
 ```
 
 The experiment was run with the following parameters.
-
-```{.yaml filename="config.yml"}
-default:
-  architecture_id: "cnn"
-  accelerator: "cuda"
-  n_epochs: 10
-  batch_size: 64
-  learning_rate: 0.005
-  train_size: 10000
-```
