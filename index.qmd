@@ -9,9 +9,6 @@ format:
 
 ## TODO
 
-- Modify this so that it gets the most recent benchmark results, not just the most recent run from today. 
-  The report generation should not be so tightly coupled to the benchmark itself.
-
 - Modify this so that it gets multiple results, especially since different ones illustrate different concepts.
 
 ```{r include = FALSE}
@@ -37,7 +34,13 @@ benchmark_results = read_csv(result_file_name) %>%
 
 ## Setup
 
-We use the `benchmark` package to measure the time required for training models. This process is applied to the ["Guess the correlation"](https://torch.mlverse.org/start/guess_the_correlation/) dataset. The code is adapted (in some cases, copied) from the linked tutorial.
+We use the `benchmark` package to measure the time required for training models. 
+This process is applied to the ["Guess the correlation"](https://torch.mlverse.org/start/guess_the_correlation/) dataset. 
+The code is adapted (in some cases, copied) from the linked tutorial.
+
+Generally, the more meaningful benchmarks were run using the CNN from the tutorial (3,304,193 parameters).
+The code also supports a small multi-layer perceptron with 2 hidden layers, each with 20 neurons. 
+It is relatively straightforward to add different architectures.
 
 ```{r echo = FALSE}
 knitr::kable(
@@ -46,7 +49,7 @@ knitr::kable(
   col.names = c("Library", "Running time"))
 ```
 
-Meaning...
+Meaning, for comparison purposes...
 
 ```{r echo = FALSE}
 pytorch_time = benchmark_results %>%

@@ -1,11 +1,12 @@
 library(glue)
 library(here)
 library(readr)
+library(stringr)
 
 source(here("R", "output_dir_name.R"))
 
 config_file_name = "config.yml"
-config_file_path = here(result_dir_name(), config_file_name)
+config_file_path = here(most_recent_result_name(), config_file_name)
 yml_chunk_start = paste("\n```{.yaml filename=\"", config_file_name, "\"}", sep = "")
 
 config_str = read_file(config_file_path)
