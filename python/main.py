@@ -7,7 +7,6 @@ import custom_transforms
 from learners import create_learner
 import hydra
 import os
-import polars as pl
 import pandas as pd
 import yaml
 
@@ -59,7 +58,7 @@ def main(config):
 
     elapsed_time = round(end_time - start_time, 2)
 
-    print(elapsed_time)
+    print("pytorch time: " + str(elapsed_time))
 
     config_stream = open("python/config.yaml", "r")
     config = yaml.load(config_stream, Loader=yaml.CLoader)

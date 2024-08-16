@@ -68,9 +68,11 @@ benchmark_results = mark(
 print("mlr3torch learner:")
 if ("GraphLearner" %in% class(mlr3torch_learner)) {
   print(mlr3torch_learner$base_learner()$model$network)
+  print(paste("mlr3torch number of epochs:", mlr3torch_learner$base_learner()$param_set$get_values()$epochs))
   print(paste("mlr3torch batch size:", mlr3torch_learner$base_learner()$param_set$get_values()$batch_size, sep = " "))
 } else {
   print(mlr3torch_learner$model$network)
+  print(paste("mlr3torch number of epochs:", mlr3torch_learner$param_set$get_values()$epochs))
   print(paste("mlr3torch batch size:", mlr3torch_learner$param_set$get_values()$batch_size, sep = " "))
 }
 
