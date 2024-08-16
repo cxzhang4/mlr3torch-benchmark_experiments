@@ -1,6 +1,6 @@
 # Package names
 packages <- c("here", "config", "bench", "magrittr", "dplyr", "data.table", "readr", "tibble", "torch", "mlr3", "mlr3torch",
-              "knitr")
+              "knitr", "rmarkdown")
 
 # Install packages not yet installed
 installed_packages <- packages %in% rownames(installed.packages())
