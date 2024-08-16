@@ -1,0 +1,4 @@
+library,total_time,architecture_id,accelerator,n_epochs,batch_size,learning_rate,train_size
+torch,21s,cnn,cuda,5,64,0.005,1000
+mlr3torch,24.1s,cnn,cuda,5,64,0.005,1000
+pytorch,2.89,cnn,cuda,5,64,0.005,1000
