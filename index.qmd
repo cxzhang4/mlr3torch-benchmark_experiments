@@ -9,7 +9,6 @@ format:
 
 ```{r include = FALSE}
 library(here)
-# library(flextable)
 library(readr)
 library(magrittr)
 library(dplyr)
@@ -31,10 +30,7 @@ benchmark_results = read_csv(result_file_name) %>%
 
 We use the `benchmark` package to measure the time required for training models. This process is applied to the ["Guess the correlation"](https://torch.mlverse.org/start/guess_the_correlation/) dataset.
 
-
 ```{r echo = FALSE}
-# flextable(benchmark_results)
-
 knitr::kable(
   x = benchmark_results,
   digits = 2,
