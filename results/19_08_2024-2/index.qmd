@@ -76,8 +76,8 @@ The experiment was run with the following parameters.
 default:
   architecture_id: "cnn"
   accelerator: "cuda"
-  n_epochs: 2
+  n_epochs: 10
   batch_size: 64
   learning_rate: 0.001
-  train_size: 100
+  train_size: 10000
 ```

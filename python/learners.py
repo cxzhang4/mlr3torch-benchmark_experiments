@@ -25,7 +25,9 @@ def create_cnn():
         nn.ReLU(),
         nn.AvgPool2d(2),
         nn.Flatten(start_dim=1),
-        nn.Linear(in_features=14 * 14 * 128, out_features=128),
+        nn.Linear(in_features=14 * 14 * 128, out_features=5000),
+        nn.ReLU(),
+        nn.Linear(in_features=5000, out_features = 128),
         nn.ReLU(),
         nn.Linear(in_features=128, out_features=1)
     )

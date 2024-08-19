@@ -4,12 +4,14 @@
 ## Remove this if you want to use this Makefile for real targets
 .PHONY: *
 
+# runs the benchmark based on the current config.yml
 benchmark:
 	export CUDA_VISIBLE_DEVICES=2
 	Rscript R/main.R 
 	cp config.yml python/config.yaml
 	python python/main.py
 
+# renders a report based on the most recently run benchmark
 report:
 	Rscript R/write_config_to_qmd.R
 	quarto render index.qmd

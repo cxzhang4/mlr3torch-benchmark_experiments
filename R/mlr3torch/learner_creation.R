@@ -30,8 +30,10 @@ create_mlr3torch_cnn = function(batch_size, n_epochs, lr, accelerator) {
     po("nn_relu_3") %>>%
     po("nn_avg_pool2d_3", kernel_size = 2) %>>%
     po("nn_flatten", start_dim = 2) %>>%
-    po("nn_linear", out_features = 128) %>>%
+    po("nn_linear_1", out_features = 5000) %>>%
     po("nn_relu_4") %>>%
+    po("nn_linear_2", out_features = 128) %>>%
+    po("nn_relu_5") %>>%
     po("nn_head")
 
   graph_cnn = cnn_architecture %>>%

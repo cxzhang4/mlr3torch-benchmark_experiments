@@ -21,9 +21,11 @@ create_torch_cnn = function() {
         nn_relu(),
         nn_avg_pool2d(2),
         nn_flatten(start_dim = 2),
-        nn_linear(in_features = 14 * 14 * 128, out_features = 128),
+        nn_linear(in_features = 14 * 14 * 128, out_features = 5000),
         nn_relu(),
-        nn_linear(in_features = 128, out_features = 1)
+        nn_linear(in_features = 5000, out_features = 128),
+        nn_relu(),
+        nn_linear(in_features = 128, out_features = 1),
     )   
 }
 
