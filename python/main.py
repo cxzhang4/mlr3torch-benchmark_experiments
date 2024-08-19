@@ -42,9 +42,8 @@ def main(config):
     optimizer = torch.optim.Adam(learner.parameters(), lr = config.default.learning_rate)
 
     print("number of epochs: " + str(config.default.n_epochs))
-    n_epochs = config.default.n_epochs
     start_time = time.time()
-    for i in range(n_epochs):
+    for i in range(config.default.n_epochs):
         learner.train()
         for i, (img, target) in enumerate(train_dataloader):
             img, target = img.to(DEVICE), target.to(DEVICE)

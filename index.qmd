@@ -38,7 +38,8 @@ We use the `benchmark` package to measure the time required for training models.
 This process is applied to the ["Guess the correlation"](https://torch.mlverse.org/start/guess_the_correlation/) dataset. 
 The code is adapted (in some cases, copied) from the linked tutorial.
 
-Generally, the more meaningful benchmarks were run using the CNN from the tutorial (3,304,193 parameters).
+Generally, the more meaningful benchmarks were run using the CNN from the tutorial, with an extra linear layer at the end (126,177,929 parameters).
+You need to verify this in some way (e.g. by looking at the committed code at the time your ran the benchmark).
 The code also supports a small multi-layer perceptron with 2 hidden layers, each with 20 neurons. 
 It is relatively straightforward to add different architectures.
 
