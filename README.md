@@ -2,11 +2,11 @@
 
 ## Installation
 
-To install `torch` and friends, run the commands in `install_torch.sh`.
+To create a `mamba` environment and install R `torch`, run the commands in `install_torch.sh`.
 
 Python packages: `environment.yml` contains a full Python dependency list.
 
-R packages: running `R/install_packages.R` will install all R dependencies.
+R packages: run `R/install_packages.R`. The R dependency versions are not currently managed.
 
 ## Usage
 
@@ -18,14 +18,4 @@ Run `make benchmark`, then `make report`.
 
 Do NOT touch `python/config.yaml`.
 
-## TODO
-
-- "actually training the network"
-
-    - similar validation loss? (TODO: adjust mlr3torch code to use the "split ==" condition)
-
-    - time validation
-
-    - track validation loss
-
-    - time prediction on test set
+Contact [Carson](https://github.com/cxzhang4) if you have issues.
