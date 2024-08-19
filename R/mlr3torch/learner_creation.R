@@ -22,7 +22,7 @@ create_mlr3torch_cnn = function(batch_size, n_epochs, lr, accelerator) {
   cnn_architecture = po("torch_ingress_ltnsr") %>>%
     po("nn_conv2d_1", out_channels = 32, kernel_size = 3) %>>%
     po("nn_relu_1") %>>%
-    po("nn_avg_pool2d_1", kernel_size = 2) %>>% # TODO: determine whether we need to specify kernel size
+    po("nn_avg_pool2d_1", kernel_size = 2) %>>%
     po("nn_conv2d_2", out_channels = 64, kernel_size = 3) %>>%
     po("nn_relu_2") %>>%
     po("nn_avg_pool2d_2", kernel_size = 2) %>>%
@@ -50,11 +50,9 @@ create_copy_from_nn_module = function(task, torch_learner, architecture_id, batc
   lrn("regr.torch_model",
     network = torch_learner,
     ingress_tokens = ingress_tokens,
-    # training parameters
     batch_size     = batch_size,
     epochs         = n_epochs,
     device         = accelerator,
-    # Defining the optimizer, loss, and callbacks
     optimizer      = t_opt("adam", lr = lr),
     loss           = t_loss("mse")
   )

@@ -24,6 +24,8 @@ Do NOT touch `python/config.yaml`.
 
     - similar validation loss? (TODO: adjust mlr3torch code to use the "split ==" condition)
 
-Quarto document that describes "this". 
+    - time validation
 
-Add an environment for non-CUDA machines, if necessary.
+    - track validation loss
+
+    - time prediction on test set

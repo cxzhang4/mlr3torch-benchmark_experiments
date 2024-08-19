@@ -6,6 +6,8 @@ library(magrittr)
 library(tibble)
 library(dplyr)
 
+print(R.version)
+
 source(here("R", "get_data.R"))
 
 source(here("R", "torch", "data_setup.R"))
