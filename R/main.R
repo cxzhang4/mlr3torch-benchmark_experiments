@@ -24,7 +24,7 @@ source(here("R", "output_dir_name.R"))
 config = config::get()
 
 data_dir = here("data", "correlation")
-should_download = list.files(data_dir) == 0
+should_download = length(list.files(data_dir)) == 0
 get_data(data_dir, should_download)
 
 trn_idx = 1:(config$train_size)
